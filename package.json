@@ -15,5 +15,6 @@
     "concurrently": "^4.0.1"
   },
   "start": "node server.js",
-  "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+  "license": "ISC"
 }

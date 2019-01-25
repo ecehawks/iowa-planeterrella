@@ -1,19 +1,8 @@
-import {
-  RouteComponentProps,
-} from 'react-router-dom';
-
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import App from '../App';
 
-let appprops: RouteComponentProps;
-
-describe('App.tsx', () => {
-  let instance: App;
-
-  beforeEach(() => {
-      instance = new App(appprops);
-  });
-
-  it('App should be an instance of itself', async () => {
-      expect(instance).toBeInstanceOf(App);
-  });
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(React.createElement(App), div);
 });

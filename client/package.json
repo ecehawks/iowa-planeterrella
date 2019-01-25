@@ -31,17 +31,38 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "jest": "^23.6.0",
+    "@babel/core": "^7.2.2",
+    "@types/enzyme": "^3.1.15",
+    "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^23.3.13",
-    "ts-jest": "^21.2.2",
-    "typescript": "^3.2.4"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^24.0.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.8.0",
+    "enzyme-to-json": "^3.3.5",
+    "jest": ">=22 <24",
+    "jest-cli": "^24.0.0",
+    "raf": "^3.4.1",
+    "ts-jest": "^23.10.5"
   },
   "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
     "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "\\.(ts|tsx)$": "ts-jest"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
-    "verbose": true
+    "setupFiles": [
+      "raf/polyfill"
+    ],
+    "testRegex": "/tests/.*\\.(ts|tsx|js)$",
+    "setupFilesAfterEnv": ["<rootDir>src/setupTests.ts"],
+    "snapshotSerializers": [
+      "enzyme-to-json"
+    ]
   }
 }

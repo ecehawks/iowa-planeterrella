@@ -1,9 +1,9 @@
 import React from 'react';
-import {
-  RouteComponentProps,
-} from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
-import './App.css';
+import NavBar from './NavBar';
+import LandingPage from './LandingPage';
+import Footer from './Footer';
 
 type AppState = {
   response: string,
@@ -12,6 +12,7 @@ type AppState = {
 }
 
 export default class App extends React.Component<RouteComponentProps, AppState> {
+
   constructor(props: RouteComponentProps){
     super(props);
     this.state = {
@@ -30,9 +31,7 @@ export default class App extends React.Component<RouteComponentProps, AppState> 
   callApi = async () => {
     const response = await fetch('/api/hello');
     const body = await response.json();
-
     if (response.status !== 200) throw Error(body.message);
-
     return body;
   };
 
@@ -46,26 +45,20 @@ export default class App extends React.Component<RouteComponentProps, AppState> 
       body: JSON.stringify({ post: this.state.post }),
     });
     const body = await response.text();
-
     this.setState({ responseToPost: body });
   };
-
+  
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <NavBar/>
+        <div className="planeterrella-banner">
+          <div className="planeterrella-img"></div>
+        </div>
+        <LandingPage/>
+        
+
+        
         <p>{this.state.response}</p>
         <form onSubmit={this.handleSubmit}>
           <p>
@@ -79,6 +72,7 @@ export default class App extends React.Component<RouteComponentProps, AppState> 
           <button type="submit">Submit</button>
         </form>
         <p>{this.state.responseToPost}</p>
+        <Footer/>
       </div>
     );
   }

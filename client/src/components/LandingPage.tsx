@@ -52,7 +52,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 </div>
                             </div>
                         </Col>
-                        <Col class='control-col' md={3}>
+                        <Col className='control-col' md={3}>
                             <div className='control-box'>
                                 <h2 className='heading control'>CONTROLS</h2>
                                 <Button id='join-btn' className='control-btn'>Join</Button>

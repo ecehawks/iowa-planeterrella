@@ -10,7 +10,7 @@ export default class Footer extends React.PureComponent {
                     <div className="univ-logo"></div>
                     <h4 className="heading-3">Acknowledgements</h4>
                     <div className="footer-info">
-                        <Row class="footer-row">
+                        <Row className="footer-row">
                             <Col md={2}>
                                 <div className="image-10" />
                             </Col>

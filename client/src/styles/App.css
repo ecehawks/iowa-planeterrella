@@ -123,6 +123,7 @@
   font-family: Montserrat, sans-serif;
   color: #968b5e;
   font-weight: 300;
+  text-align: left;
 }
 
 .div-block-2 {
@@ -407,7 +408,7 @@
   background-image: linear-gradient(180deg, rgba(92, 82, 82, .42), rgba(92, 82, 82, .42)), url('../assets/fractal-1280079_960_720.jpg');
   background-position: 0px 0px, 0px 0px;
   background-size: auto, cover;
-  padding-top: 20px;
+  padding: 20px;
 }
 
 .bold-text-2 {

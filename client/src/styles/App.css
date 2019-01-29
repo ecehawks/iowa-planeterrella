@@ -320,8 +320,12 @@
   font-weight: 600;
 }
 
-.image-6 {
+.info-img-top {
+  width: 300px;
   margin-bottom: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('');
 }
 
 .columns-4 {
@@ -335,11 +339,14 @@
 .paragraph {
   font-family: Montserrat, sans-serif;
   color: #000;
+  text-align: left;
 }
 
-.image-7 {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, .5)), to(rgba(0, 0, 0, .5)));
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5));
+.info-img-bottom {
+  width: 300px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('');
 }
 
 .div-block-4 {

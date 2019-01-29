@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/App.css'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Route} from 'react-router-dom'

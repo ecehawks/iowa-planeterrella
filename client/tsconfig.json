@@ -13,14 +13,16 @@
     "noImplicitReturns": false,
     "outDir": "./built",
     "preserveConstEnums": true,
-    "rootDir": "./src",
+    "rootDir": "./",
     "sourceMap": true,
     "strict": false,
     "target": "es6",
     "types": [
       "node",
       "jest",
-      "react"
+      "react",
+      "../node_modules/@types",
+      "../@types",
     ],
     "lib": [
       "dom",

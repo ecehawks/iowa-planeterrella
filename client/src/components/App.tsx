@@ -1,5 +1,4 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import NavBar from './NavBar';
 import LandingPage from './LandingPage';
@@ -9,11 +8,13 @@ type AppState = {
   response: string,
   post: string,
   responseToPost: string,
-}
+};
 
-export default class App extends React.Component<RouteComponentProps, AppState> {
+type AppProps = {};
 
-  constructor(props: RouteComponentProps){
+export default class App extends React.Component<AppProps, AppState> {
+
+  constructor(props: AppProps){
     super(props);
     this.state = {
       response: '',

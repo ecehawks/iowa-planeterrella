@@ -3,6 +3,8 @@ import Slider from 'react-rangeslider';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 
+import '../styles/App.css';
+
 type LandingPageState = {
     voltage: number,
     airPressure: number,

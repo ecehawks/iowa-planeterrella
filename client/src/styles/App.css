@@ -44,7 +44,7 @@
   margin-left: 20px;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url('./assets/logo_gold.png');
+  background-image: url('../assets/logo_gold.png');
 }
 
 .nav-link {
@@ -123,6 +123,7 @@
   font-family: Montserrat, sans-serif;
   color: #968b5e;
   font-weight: 300;
+  text-align: left;
 }
 
 .div-block-2 {
@@ -253,7 +254,7 @@
 .planeterrella-img {
   height: 100%;
   margin-bottom: 0px;
-  background-image: url('./assets/planeterrella_banner.jpg');
+  background-image: url('../assets/planeterrella_banner.jpg');
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -261,8 +262,8 @@
 .planeterrella-banner {
   position: relative;
   height: 70px;
-  background-image: url('./assets/10712677_372448922931609_40_med.jpeg'), -webkit-gradient(linear, left top, left bottom, from(#e1e0e0), to(#e1e0e0));
-  background-image: url('./assets/10712677_372448922931609_40_med.jpeg'), linear-gradient(180deg, #e1e0e0, #e1e0e0);
+  background-image: url('../assets/10712677_372448922931609_40_med.jpeg'), -webkit-gradient(linear, left top, left bottom, from(#e1e0e0), to(#e1e0e0));
+  background-image: url('../assets/10712677_372448922931609_40_med.jpeg'), linear-gradient(180deg, #e1e0e0, #e1e0e0);
   background-position: 100% 0px, 0px 0px;
   background-size: cover, auto;
   box-shadow: 2px 13px 24px 0 #252525;
@@ -308,8 +309,8 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(hsla(0, 2%, 88%, .49)), to(hsla(0, 2%, 88%, .49))), url('./assets/fractal-1280079_960_720.jpg');
-  background-image: linear-gradient(180deg, hsla(0, 2%, 88%, .49), hsla(0, 2%, 88%, .49)), url('./assets/fractal-1280079_960_720.jpg');
+  background-image: -webkit-gradient(linear, left top, left bottom, from(hsla(0, 2%, 88%, .49)), to(hsla(0, 2%, 88%, .49))), url('../assets/fractal-1280079_960_720.jpg');
+  background-image: linear-gradient(180deg, hsla(0, 2%, 88%, .49), hsla(0, 2%, 88%, .49)), url('../assets/fractal-1280079_960_720.jpg');
   background-position: 0px 0px, 0px 0px;
   background-size: auto, cover;
 }
@@ -320,8 +321,12 @@
   font-weight: 600;
 }
 
-.image-6 {
+.info-img-top {
+  width: 300px;
   margin-bottom: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('');
 }
 
 .columns-4 {
@@ -335,11 +340,14 @@
 .paragraph {
   font-family: Montserrat, sans-serif;
   color: #000;
+  text-align: left;
 }
 
-.image-7 {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, .5)), to(rgba(0, 0, 0, .5)));
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5));
+.info-img-bottom {
+  width: 300px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('');
 }
 
 .div-block-4 {
@@ -396,11 +404,11 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(92, 82, 82, .42)), to(rgba(92, 82, 82, .42))), url('./assets/fractal-1280079_960_720.jpg');
-  background-image: linear-gradient(180deg, rgba(92, 82, 82, .42), rgba(92, 82, 82, .42)), url('./assets/fractal-1280079_960_720.jpg');
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(92, 82, 82, .42)), to(rgba(92, 82, 82, .42))), url('../assets/fractal-1280079_960_720.jpg');
+  background-image: linear-gradient(180deg, rgba(92, 82, 82, .42), rgba(92, 82, 82, .42)), url('../assets/fractal-1280079_960_720.jpg');
   background-position: 0px 0px, 0px 0px;
   background-size: auto, cover;
-  padding-top: 20px;
+  padding: 20px;
 }
 
 .bold-text-2 {
@@ -457,7 +465,7 @@
   margin-bottom: 10px;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url('./assets/DomeWordSingle GOLD-ffcd00.png');
+  background-image: url('../assets/DomeWordSingle GOLD-ffcd00.png');
 }
 
 .footer-info {
@@ -489,7 +497,7 @@
   height: 100%;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url('./assets/nsf_logo.png');
+  background-image: url('../assets/nsf_logo.png');
 }
 
 .paragraph-3 {

@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "jsx": "preserve",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": false,
+    "outDir": "./built",
+    "preserveConstEnums": true,
+    "rootDir": "./",
+    "sourceMap": true,
+    "strict": false,
+    "target": "es6",
+    "types": [
+      "node",
+      "jest",
+      "react",
+      "../node_modules/@types",
+      "../@types",
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "node_modules/@types",
+    "public/config"
+  ],
+  "exclude": [
+    "built",
+    "node_modules",
+    "!node_modules/@types"
+  ]
+}

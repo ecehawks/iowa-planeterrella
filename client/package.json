@@ -4,6 +4,7 @@
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^4.2.1",
+    "firebase": "^5.8.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-rangeslider": "^2.2.0",

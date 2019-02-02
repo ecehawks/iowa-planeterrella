@@ -1052,13 +1052,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-rangeslider@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@types/react-rangeslider/-/react-rangeslider-2.2.0.tgz#b2de3f53b4d18f87fc6765844d0c963c3d0239a9"
-  integrity sha512-cTHbr/eiuWS1bR/yDsLtF00QmFoGVGaPfimXdEWwM57j9CG9k3jJ/Hw0FX6v3n5vnhHf83o6g2OeuVAb/mRIPg==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-router-dom@^4.3.1":
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-4.3.1.tgz#71fe2918f8f60474a891520def40a63997dafe04"
@@ -9193,14 +9186,6 @@ react-popper@^0.10.4:
     popper.js "^1.14.1"
     prop-types "^15.6.1"
 
-react-rangeslider@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-rangeslider/-/react-rangeslider-2.2.0.tgz#4362b01f4f5a455f0815d371d496f69ca4c6b5aa"
-  integrity sha512-5K7Woa+cyqZ5wiW5+KhqGV+3+FiFxGKQ9rUxTMh52sObXVYEeBbfxFrp1eBvS8mRIxnUbHz9ppnFP0LhwOyNeg==
-  dependencies:
-    classnames "^2.2.3"
-    resize-observer-polyfill "^1.4.2"
-
 react-router-dom@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.3.1.tgz#4c2619fc24c4fa87c9fd18f4fb4a43fe63fbd5c6"
@@ -9661,11 +9646,6 @@ requires-port@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
-
-resize-observer-polyfill@^1.4.2:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
-  integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
 
 resolve-cwd@^2.0.0:
   version "2.0.0"

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Slider from 'react-rangeslider';
 import 'react-rangeslider/lib/index.css';
 
@@ -72,7 +72,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                                 value={voltage}
                                                 tooltip={false}
                                                 onChange={this.onVoltageChange}
-                                                className={'slider'}
+                                                // className={'slider'}
                                             />
                                         </div>
                                         <div className='text-block-3'>{voltage} V</div>
@@ -86,7 +86,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                                 value={airPressure}
                                                 tooltip={false}
                                                 onChange={this.onAirPressureChange}
-                                                className={'slider'}
+                                                // className={'slider'}
                                             />
                                         </div>
                                         <div className='text-block-3'>{airPressure} Pa</div>

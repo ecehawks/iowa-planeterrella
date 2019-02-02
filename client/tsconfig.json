@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "experimentalDecorators": true,
     "jsx": "preserve",
     "module": "esnext",
@@ -17,13 +17,6 @@
     "sourceMap": true,
     "strict": false,
     "target": "es6",
-    "types": [
-      "node",
-      "jest",
-      "react",
-      "../node_modules/@types",
-      "../@types",
-    ],
     "lib": [
       "dom",
       "dom.iterable",

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Slider from '@material-ui/lab/Slider';
-import 'react-rangeslider/lib/index.css';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 

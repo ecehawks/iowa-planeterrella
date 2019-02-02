@@ -1,5 +1,5 @@
-import React from 'react';
-import Slider from 'react-rangeslider';
+import * as React from 'react';
+import Slider from '@material-ui/lab/Slider';
 import 'react-rangeslider/lib/index.css';
 
 import { Container, Row, Col, Button } from 'reactstrap';
@@ -22,20 +22,23 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         };
     }
 
-    onVoltageChange = (value: number) => {
+    onVoltageChange = (event: React.MouseEvent, value: number) => {
+        console.log(event);
         this.setState({
             voltage: value
         })
     }
 
-    onAirPressureChange = (value: number) => {
+    onAirPressureChange = (event: React.MouseEvent, value: number) => {
+        console.log(event);
         this.setState({
             airPressure: value
         })
     }
 
     render() {
-        let { voltage, airPressure } = this.state
+
+        let { airPressure, voltage } = this.state;
 
         return (
             <div className='info-section'>
@@ -70,9 +73,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                                 min={0}
                                                 max={800}
                                                 value={voltage}
-                                                tooltip={false}
                                                 onChange={this.onVoltageChange}
-                                                className={'slider'}
+                                                className={'voltage_slider'}
                                             />
                                         </div>
                                         <div className='text-block-3'>{voltage} V</div>
@@ -84,9 +86,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                                 min={0}
                                                 max={100}
                                                 value={airPressure}
-                                                tooltip={false}
                                                 onChange={this.onAirPressureChange}
-                                                className={'slider'}
+                                                className={'preasure_slider'}
                                             />
                                         </div>
                                         <div className='text-block-3'>{airPressure} Pa</div>

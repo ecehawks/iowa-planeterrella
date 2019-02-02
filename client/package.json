@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/core": "^3.9.1",
+    "@material-ui/lab": "^3.0.0-alpha.29",
     "@types/jest": "^23.3.13",
     "@types/node": "^10.12.18",
     "@types/react-dom": "^16.0.11",

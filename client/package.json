@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "license": "MIT",
   "dependencies": {
+    "@firebase/app-types": "^0.3.3",
+    "@firebase/util": "^0.2.6",
     "bootstrap": "^4.2.1",
     "firebase": "^5.8.2",
     "react": "^16.7.0",

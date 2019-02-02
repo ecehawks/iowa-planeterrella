@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from 'firebase';
 import React, { Component } from 'react';
 
 import './App.css';
@@ -14,7 +14,10 @@ const config = {
   storageBucket: "<BUCKET>.appspot.com",
   messagingSenderId: "433273184604"
 };
-firebase.initializeApp(config);
+
+let firebaseDb = firebase.initializeApp(config);
+let ledOn = firebaseDb.database().ref("led_On")
+
 
 class App extends Component {
 
@@ -25,6 +28,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    console.log(ledOn);
     this.callApi()
       .then(res => this.setState({ response: res.express }))
       .catch(err => console.log(err));

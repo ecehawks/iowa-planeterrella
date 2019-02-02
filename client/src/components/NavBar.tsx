@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {
     Collapse,
     Navbar,
@@ -9,9 +8,15 @@ import {
     NavItem,
     NavLink } from 'reactstrap';
 
-export default class NavBar extends React.Component {
-    constructor(props) {
-        super(props) ;
+type NavBarState = {
+    isOpen: boolean,
+};
+
+type NavBarProps = {};
+
+export default class NavBar extends React.Component<NavBarProps, NavBarState> {
+    constructor(props: NavBarProps) {
+        super(props);
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false

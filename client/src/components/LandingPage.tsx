@@ -45,8 +45,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 <div className='video'>
                                 </div>
                                 <div className='queue-info'>
-                                    <div className='text-block-2'>
-                                        <strong className='bold-text-4'>Click Join to Control the Planeterrella</strong>
+                                    <div className='video-label click-join-text'>
+                                        Click Join to Control the Planeterrella
                                     </div>
                                 </div>
                             </div>

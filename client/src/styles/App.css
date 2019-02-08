@@ -156,11 +156,12 @@
   background-image: linear-gradient(180deg, #e2b600, #e2b600);
 }
 
-.text-block-2 {
+.video-label {
   display: inline-block;
   color: #ff0505;
   font-size: 18px;
   font-weight: 300;
+  text-align: left;
 }
 
 .control-box {
@@ -217,6 +218,7 @@
   color: #000;
   font-size: 16px;
   font-weight: 400;
+  text-align: left;
 }
 
 .second-slider {
@@ -621,7 +623,7 @@
   display: none;
 } */
 
-.bold-text-4 {
+.click-join-text {
   font-family: Montserrat, sans-serif;
   color: #9a8f65;
   font-weight: 400;

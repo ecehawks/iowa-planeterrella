@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "jsx": "preserve",
     "lib": [
       "dom",
@@ -33,15 +33,15 @@
       "react"
     ]
   },
+  "exclude": [
+    "built",
+    "node_modules",
+    "!node_modules/@types"
+  ],
   "include": [
     "src/**/*",
     "tests/**/*",
     "node_modules/@types",
     "public/config"
-  ],
-  "exclude": [
-    "built",
-    "node_modules",
-    "!node_modules/@types"
   ]
 }

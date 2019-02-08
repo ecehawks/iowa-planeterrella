@@ -3,7 +3,14 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": false,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": false,
     "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -13,7 +20,9 @@
     "noImplicitReturns": false,
     "outDir": "./built",
     "preserveConstEnums": true,
+    "resolveJsonModule": true,
     "rootDir": "./",
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": false,
     "target": "es6",
@@ -27,6 +36,11 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true
+    "types": [
+      "node",
+      "jest",
+      "react"
+    ]
   },
   "include": [
     "src/**/*",

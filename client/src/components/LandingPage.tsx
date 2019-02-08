@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Slider from '@material-ui/lab/Slider';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 
@@ -21,17 +20,15 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         };
     }
 
-    onVoltageChange = (event: React.MouseEvent, value: number) => {
-        console.log(event);
+    onVoltageChange = (event: any) => {
         this.setState({
-            voltage: value
+            voltage: event.target.value
         })
     }
 
-    onAirPressureChange = (event: React.MouseEvent, value: number) => {
-        console.log(event);
+    onAirPressureChange = (event: any) => {
         this.setState({
-            airPressure: value
+            airPressure: event.target.value
         })
     }
 
@@ -67,28 +64,32 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     </div>
                                     <h4 className='control-selection-labels'>Voltage</h4>
                                     <div className='slider-container'>
-                                        <div className='slider-box'>
-                                            <Slider
-                                                min={0}
-                                                max={800}
+                                        <form className="slider-box">
+                                            <input 
+                                                type="range"
+                                                min="0"
+                                                max="800"
                                                 value={voltage}
+                                                className="slider"
                                                 onChange={this.onVoltageChange}
-                                                className={'voltage_slider'}
-                                            />
-                                        </div>
+                                            >
+                                            </input>
+                                        </form>
                                         <div className='text-block-3'>{voltage} V</div>
                                     </div>
                                     <h4 className='control-selection-labels'>Air Pressure</h4>
                                     <div className='slider-container'>
-                                        <div className='slider-box'>
-                                            <Slider
-                                                min={0}
-                                                max={100}
+                                        <form className="slider-box">
+                                            <input 
+                                                type="range"
+                                                min="0"
+                                                max="800"
                                                 value={airPressure}
+                                                className="slider"
                                                 onChange={this.onAirPressureChange}
-                                                className={'preasure_slider'}
-                                            />
-                                        </div>
+                                            >
+                                            </input>
+                                        </form>
                                         <div className='text-block-3'>{airPressure} Pa</div>
                                     </div>
                                 </div>

@@ -2,8 +2,16 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": false,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -13,30 +21,27 @@
     "noImplicitReturns": false,
     "outDir": "./built",
     "preserveConstEnums": true,
+    "resolveJsonModule": true,
     "rootDir": "./",
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": false,
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true
+    "types": [
+      "node",
+      "jest",
+      "react"
+    ]
   },
+  "exclude": [
+    "built",
+    "node_modules",
+    "!node_modules/@types"
+  ],
   "include": [
     "src/**/*",
     "tests/**/*",
     "node_modules/@types",
     "public/config"
-  ],
-  "exclude": [
-    "built",
-    "node_modules",
-    "!node_modules/@types"
   ]
 }

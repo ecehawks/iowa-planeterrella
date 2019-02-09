@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Slider from 'react-rangeslider';
-import 'react-rangeslider/lib/index.css';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 
@@ -22,20 +20,21 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         };
     }
 
-    onVoltageChange = (value: number) => {
+    onVoltageChange = (event: any) => {
         this.setState({
-            voltage: value
+            voltage: event.target.value
         })
     }
 
-    onAirPressureChange = (value: number) => {
+    onAirPressureChange = (event: any) => {
         this.setState({
-            airPressure: value
+            airPressure: event.target.value
         })
     }
 
     render() {
-        let { voltage, airPressure } = this.state
+
+        let { airPressure, voltage } = this.state;
 
         return (
             <div className='info-section'>
@@ -46,8 +45,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 <div className='video'>
                                 </div>
                                 <div className='queue-info'>
-                                    <div className='text-block-2'>
-                                        <strong className='bold-text-4'>Click Join to Control the Planeterrella</strong>
+                                    <div className='video-label click-join-text'>
+                                        Click Join to Control the Planeterrella
                                     </div>
                                 </div>
                             </div>
@@ -65,30 +64,32 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     </div>
                                     <h4 className='control-selection-labels'>Voltage</h4>
                                     <div className='slider-container'>
-                                        <div className='slider-box'>
-                                            <Slider
-                                                min={0}
-                                                max={800}
+                                        <form className="slider-box">
+                                            <input 
+                                                type="range"
+                                                min="0"
+                                                max="800"
                                                 value={voltage}
-                                                tooltip={false}
+                                                className="slider"
                                                 onChange={this.onVoltageChange}
-                                                // className={'slider'}
-                                            />
-                                        </div>
+                                            >
+                                            </input>
+                                        </form>
                                         <div className='text-block-3'>{voltage} V</div>
                                     </div>
                                     <h4 className='control-selection-labels'>Air Pressure</h4>
                                     <div className='slider-container'>
-                                        <div className='slider-box'>
-                                            <Slider
-                                                min={0}
-                                                max={100}
+                                        <form className="slider-box">
+                                            <input 
+                                                type="range"
+                                                min="0"
+                                                max="800"
                                                 value={airPressure}
-                                                tooltip={false}
+                                                className="slider"
                                                 onChange={this.onAirPressureChange}
-                                                // className={'slider'}
-                                            />
-                                        </div>
+                                            >
+                                            </input>
+                                        </form>
                                         <div className='text-block-3'>{airPressure} Pa</div>
                                     </div>
                                 </div>

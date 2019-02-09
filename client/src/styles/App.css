@@ -1,3 +1,8 @@
+
+
+
+
+
 .App {
   text-align: center;
 }
@@ -89,28 +94,43 @@
 }
 
 .slider-box {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   width: 70%;
   height: 20px;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
   justify-content: flex-start;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
 .slider {
   flex-grow: 1;
+  appearance: none;
+  width: 100%; 
+  height: 100%; 
+  background: #d3d3d3; 
+  outline: none; 
+  opacity: 0.7; 
+  transition: opacity .2s;
+  border-radius: 15px;
 }
 
-.rangeslider__fill {
-  background-color: #ffcd00 !important;
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 25px; 
+  height: 25px; 
+  background: #FFCD00; 
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #FFCD00; /* Green background */
+  cursor: pointer; /* Cursor on hover */
 }
 
 .video {
@@ -136,11 +156,12 @@
   background-image: linear-gradient(180deg, #e2b600, #e2b600);
 }
 
-.text-block-2 {
+.video-label {
   display: inline-block;
   color: #ff0505;
   font-size: 18px;
   font-weight: 300;
+  text-align: left;
 }
 
 .control-box {
@@ -197,6 +218,7 @@
   color: #000;
   font-size: 16px;
   font-weight: 400;
+  text-align: left;
 }
 
 .second-slider {
@@ -601,7 +623,7 @@
   display: none;
 } */
 
-.bold-text-4 {
+.click-join-text {
   font-family: Montserrat, sans-serif;
   color: #9a8f65;
   font-weight: 400;

@@ -1,11 +1,13 @@
 import * as React from 'react';
+import * as firebase from 'firebase';
+import 'firebase/database';
 
 import NavBar from './NavBar';
 import LandingPage from './LandingPage';
 import Footer from './Footer';
 import InfoPage from './InfoPage';
 
-import {aurora, history, stellar, varb} from '../info'
+import { aurora, history, stellar, varb } from '../info'
 
 import { Route } from "react-router-dom";
 
@@ -17,9 +19,25 @@ type AppState = {
 
 type AppProps = {};
 
+const config = {
+  apiKey: "AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU",
+  authDomain: "ui-planeterrella.firebaseapp.com",
+  databaseURL: "https://ui-planeterrella.firebaseio.com",
+  projectId: "ui-planeterrella",
+  storageBucket: "<BUCKET>.appspot.com",
+  messagingSenderId: "433273184604"
+};
+
+let firebaseApp = firebase.initializeApp(config);
+let db = firebaseApp.database();
+let ref = db.ref("led_On");
+ref.on("value", function(snapshot) {
+  console.log("Key: " + snapshot.key + " Value: " + snapshot.val());
+});
+
 export default class App extends React.Component<AppProps, AppState> {
 
-  constructor(props: AppProps){
+  constructor(props: AppProps) {
     super(props);
     this.state = {
       response: '',
@@ -53,12 +71,12 @@ export default class App extends React.Component<AppProps, AppState> {
     const body = await response.text();
     this.setState({ responseToPost: body });
   };
-  
+
   render() {
 
     return (
       <div className="App">
-        <NavBar/>
+        <NavBar />
         <div className="planeterrella-banner">
           <div className="planeterrella-img"></div>
         </div>
@@ -66,22 +84,22 @@ export default class App extends React.Component<AppProps, AppState> {
         <Route exact={true} path="/" component={LandingPage} />
         <Route
           path='/aurora'
-          render={(props) => <InfoPage {...props} infoProps={aurora}/>}
+          render={(props) => <InfoPage {...props} infoProps={aurora} />}
         />
         <Route
           path='/van-allen-radiation-belts'
-          render={(props) => <InfoPage {...props} infoProps={varb}/>}
+          render={(props) => <InfoPage {...props} infoProps={varb} />}
         />
         <Route
           path='/stellar-ring-current'
-          render={(props) => <InfoPage {...props} infoProps={stellar}/>}
+          render={(props) => <InfoPage {...props} infoProps={stellar} />}
         />
         <Route
           path='/history'
-          render={(props) => <InfoPage {...props} infoProps={history}/>}
+          render={(props) => <InfoPage {...props} infoProps={history} />}
         />
 
-        
+
         <p>{this.state.response}</p>
         <form onSubmit={this.handleSubmit}>
           <p>
@@ -95,7 +113,7 @@ export default class App extends React.Component<AppProps, AppState> {
           <button type="submit">Submit</button>
         </form>
         <p>{this.state.responseToPost}</p>
-        <Footer/>
+        <Footer />
       </div>
     );
   }

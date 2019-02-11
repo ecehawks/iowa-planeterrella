@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as firebase from 'firebase/app';
+import 'firebase/database';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 
@@ -10,10 +12,32 @@ type LandingPageState = {
     airPressure: number,
     showSignUp: boolean,
     showSignIn: boolean,
-    showControls: boolean
+    showControls: boolean,
+    successFailMessage: string,
 }
 
 type LandingPageProps = {};
+
+const config = {
+    apiKey: "AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU",
+    authDomain: "ui-planeterrella.firebaseapp.com",
+    databaseURL: "https://ui-planeterrella.firebaseio.com",
+    projectId: "ui-planeterrella",
+    storageBucket: "<BUCKET>.appspot.com",
+    messagingSenderId: "433273184604"
+};
+
+let firebaseApp = firebase.initializeApp(config);
+let db = firebaseApp.database();
+let led_On_ref = db.ref("led_On/");
+
+// console.log the value of the db
+led_On_ref.on("value", function (snapshot) {
+    console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
+});
+
+let db_ref = db.ref();
+db_ref.update({ led_On: false });
 
 
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
@@ -26,6 +50,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             showSignUp: true,
             showSignIn: false,
             showControls: false,
+            successFailMessage: ''
         };
         this.showControlsOnClick = this.showControlsOnClick.bind(this);
         this.showSignInOnClick = this.showSignInOnClick.bind(this);
@@ -48,12 +73,46 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({showSignUp: false, showSignIn: true})
     }
 
+    signUpUser(validate: any, email: string, password: string) {
+        const { emailState, passwordState, confirmPasswordState } = validate;
+
+        if (emailState && passwordState && confirmPasswordState){
+            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log('Error Code ' + errorCode + ': ' + errorMessage);
+                this.setState({successFailMessage: 'Error Code ' + errorCode});
+            });
+
+            this.setState({showSignUp: false, showSignIn: true})
+        }
+        else{
+            this.setState({successFailMessage: 'Incorrect email/password'});
+        }
+
+    }
+
     showSignUpOnClick() {
         this.setState({ showSignIn: false, showSignUp: true})
     }
 
-    showControlsOnClick() {
-        this.setState({showControls: true, showSignIn: false, showSignUp: false})
+    showControlsOnClick(email: string, password: string) {
+
+        if (email !== '' && password !== ''){
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log('Error Code ' + errorCode + ': ' + errorMessage);
+                this.setState({successFailMessage: 'Error Code ' + errorCode});
+            });
+
+            this.setState({showControls: true, showSignIn: false, showSignUp: false});
+        }
+        else{
+            this.setState({successFailMessage: 'Input email/password'});
+        }
     }
 
     render() {
@@ -78,8 +137,15 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                         <Col className='control-col' md={3}>
                             <div className='control-box'>
                                 <h2 className='heading control'>CONTROLS</h2>
-                                <SignUp isHidden={this.state.showSignUp} signInLink={this.showSignInOnClick}/>
-                                <SignIn isHidden={this.state.showSignIn} signUpLink={this.showSignUpOnClick} showControls={this.showControlsOnClick}/>
+                                <h4 className='control-selection-labels'>{this.state.successFailMessage}</h4>
+                                <SignUp 
+                                    isHidden={this.state.showSignUp}
+                                    signInLink={this.showSignInOnClick}
+                                    signUpUser={this.signUpUser}/>
+                                <SignIn 
+                                    isHidden={this.state.showSignIn}
+                                    signUpLink={this.showSignUpOnClick}
+                                    showControls={this.showControlsOnClick}/>
                                 <div id='controls' className={this.state.showControls ? 'controls' : 'no-controls'}>
                                     <h4 className='control-selection-labels'>Select Mode</h4>
                                     <div className='mode-select'>

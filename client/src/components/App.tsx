@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as firebase from 'firebase';
-import 'firebase/database';
 
 import NavBar from './NavBar';
 import LandingPage from './LandingPage';
@@ -18,22 +16,6 @@ type AppState = {
 };
 
 type AppProps = {};
-
-const config = {
-  apiKey: "AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU",
-  authDomain: "ui-planeterrella.firebaseapp.com",
-  databaseURL: "https://ui-planeterrella.firebaseio.com",
-  projectId: "ui-planeterrella",
-  storageBucket: "<BUCKET>.appspot.com",
-  messagingSenderId: "433273184604"
-};
-
-let firebaseApp = firebase.initializeApp(config);
-let db = firebaseApp.database();
-let ref = db.ref("led_On");
-ref.on("value", function(snapshot) {
-  console.log("Key: " + snapshot.key + " Value: " + snapshot.val());
-});
 
 export default class App extends React.Component<AppProps, AppState> {
 

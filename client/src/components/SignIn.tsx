@@ -6,22 +6,31 @@ import Input from 'reactstrap/lib/Input';
 import Button from 'reactstrap/lib/Button';
 import NavLink from 'reactstrap/lib/NavLink';
 
-type SignInState = {};
+type SignInState = {
+  email: string,
+  password: string,
+  
+};
 
 type SignInProps = {
   isHidden: boolean,
   signUpLink: () => void,
-  showControls: () => void,
+  showControls: (email: string, password: string) => void,
 };
 
 export default class SignIn extends React.Component<SignInProps, SignInState> {
 
   constructor(props: SignInProps){
     super(props);
-    this.state = {};
+    this.state = {
+      email: '',
+      password: '',
+    };
   };
   
   render() {
+    const { email, password } = this.state;
+
     return (
       <div id='sign-up' className={this.props.isHidden ? 'controls' : 'no-controls'}>
           <Form>
@@ -34,7 +43,13 @@ export default class SignIn extends React.Component<SignInProps, SignInState> {
                   <Input type="password" name="password" id='password' placeholder="Enter Your Password ..." />
               </FormGroup>
           </Form>
-          <Button id='join-btn' className='control-btn' onClick={this.props.showControls}>Sign In</Button>
+          <Button
+            id='join-btn'
+            className='control-btn'
+            onClick={() => this.props.showControls(email, password)}
+          >
+          Sign In
+          </Button>
           <NavLink onClick={this.props.signUpLink}>Register</NavLink>
       </div>
     ); 

@@ -20,6 +20,7 @@ type SignUpState = {
 type SignUpProps = {
     isHidden: boolean,
     signInLink: () => void,
+    signUpUser: (validate: any, email: string, password: string) => void,
 };
 
 export default class SignUp extends React.Component<SignUpProps, SignUpState> {
@@ -92,6 +93,7 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
   }
   
   render() {
+    const { validate, email, password } = this.state;
     return (
         <div id='sign-up' className={this.props.isHidden ? 'controls' : 'no-controls'}>
             <Form>
@@ -144,7 +146,13 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
                     <FormFeedback>Passwords do not match.</FormFeedback>
                 </FormGroup>
             </Form>
-            <Button id='join-btn' className='control-btn'>Sign Up</Button>
+            <Button
+                id='join-btn'
+                className='control-btn'
+                onClick={() => this.props.signUpUser(validate, email, password)}
+            >
+            Sign Up
+            </Button>
             <div onClick={this.props.signInLink}>Already have an account? Sign In.</div>
         </div>
     );

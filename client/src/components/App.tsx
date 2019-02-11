@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as firebase from 'firebase/app';
-import 'firebase/database';
 
 import NavBar from './NavBar';
 import LandingPage from './LandingPage';
@@ -18,31 +16,6 @@ type AppState = {
 };
 
 type AppProps = {};
-
-const config = {
-  apiKey: "AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU",
-  authDomain: "ui-planeterrella.firebaseapp.com",
-  databaseURL: "https://ui-planeterrella.firebaseio.com",
-  projectId: "ui-planeterrella",
-  storageBucket: "<BUCKET>.appspot.com",
-  messagingSenderId: "433273184604"
-};
-
-let firebaseApp = firebase.initializeApp(config);
-let db = firebaseApp.database();
-let led_On_ref = db.ref("led_On/");
-
-// console.log the value of the db
-led_On_ref.on("value", function(snapshot) {
-  console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
-});
-
-let db_ref = db.ref();
-db_ref.update({led_On: false});
-
-led_On_ref.on("value", function(snapshot) {
-  console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
-});
 
 export default class App extends React.Component<AppProps, AppState> {
 
@@ -107,21 +80,6 @@ export default class App extends React.Component<AppProps, AppState> {
           path='/history'
           render={(props) => <InfoPage {...props} infoProps={history} />}
         />
-
-
-        <p>{this.state.response}</p>
-        <form onSubmit={this.handleSubmit}>
-          <p>
-            <strong>Post to Server:</strong>
-          </p>
-          <input
-            type="text"
-            value={this.state.post}
-            onChange={e => this.setState({ post: e.target.value })}
-          />
-          <button type="submit">Submit</button>
-        </form>
-        <p>{this.state.responseToPost}</p>
         <Footer />
       </div>
     );

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as firebase from 'firebase/app';
+import 'firebase/database';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 
@@ -9,6 +11,26 @@ type LandingPageState = {
 
 type LandingPageProps = {};
 
+const config = {
+    apiKey: "AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU",
+    authDomain: "ui-planeterrella.firebaseapp.com",
+    databaseURL: "https://ui-planeterrella.firebaseio.com",
+    projectId: "ui-planeterrella",
+    storageBucket: "<BUCKET>.appspot.com",
+    messagingSenderId: "433273184604"
+};
+
+let firebaseApp = firebase.initializeApp(config);
+let db = firebaseApp.database();
+let led_On_ref = db.ref("led_On/");
+
+// console.log the value of the db
+led_On_ref.on("value", function (snapshot) {
+    console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
+});
+
+let db_ref = db.ref();
+db_ref.update({ led_On: false });
 
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
 
@@ -24,12 +46,14 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({
             voltage: event.target.value
         })
+        db_ref.update({voltage: event.target.value})
     }
 
     onAirPressureChange = (event: any) => {
         this.setState({
             airPressure: event.target.value
         })
+        db_ref.update({air_pressure: event.target.value})
     }
 
     render() {
@@ -65,7 +89,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     <h4 className='control-selection-labels'>Voltage</h4>
                                     <div className='slider-container'>
                                         <form className="slider-box">
-                                            <input 
+                                            <input
                                                 type="range"
                                                 min="0"
                                                 max="800"
@@ -80,7 +104,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     <h4 className='control-selection-labels'>Air Pressure</h4>
                                     <div className='slider-container'>
                                         <form className="slider-box">
-                                            <input 
+                                            <input
                                                 type="range"
                                                 min="0"
                                                 max="800"

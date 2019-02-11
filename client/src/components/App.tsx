@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import 'firebase/database';
 
 import NavBar from './NavBar';
@@ -34,6 +34,8 @@ let ref = db.ref("led_On");
 ref.on("value", function(snapshot) {
   console.log("Key: " + snapshot.key + " Value: " + snapshot.val());
 });
+// let update = {led_On: false};
+// ref.set(update);
 
 export default class App extends React.Component<AppProps, AppState> {
 

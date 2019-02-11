@@ -7,6 +7,7 @@ import { Container, Row, Col, Button } from 'reactstrap';
 type LandingPageState = {
     voltage: number,
     airPressure: number,
+    mode: string
 }
 
 type LandingPageProps = {};
@@ -39,6 +40,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.state = {
             voltage: 0,
             airPressure: 0,
+            mode: "aurora",
         };
     }
 
@@ -46,14 +48,25 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({
             voltage: event.target.value
         })
-        db_ref.update({voltage: event.target.value})
+        db_ref.update({ voltage: event.target.value })
     }
 
     onAirPressureChange = (event: any) => {
         this.setState({
             airPressure: event.target.value
         })
-        db_ref.update({air_pressure: event.target.value})
+        db_ref.update({ air_pressure: event.target.value })
+    }
+
+    onModeSelection = (event: any) => {
+        console.log(event.target.value);
+        let value = event.target.value;
+        if (value == 'aurora' || value == 'auroraLobe' || value == 'stellarRingCurrent') {
+            this.setState({
+                mode: value
+            })
+            db_ref.update({ mode: value })
+        }
     }
 
     render() {
@@ -82,9 +95,27 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 <div className='controls'>
                                     <h4 className='control-selection-labels'>Select Mode</h4>
                                     <div className='mode-select'>
-                                        <Button id='aurora-btn' className='button top'>Aurora</Button>
-                                        <Button id='aurora-lobe-btn' className='button'>Aurora Lobe</Button>
-                                        <Button id='stellar-ring-current-btn' className='button bottom'>Stellar Ring Current</Button>
+                                        <Button 
+                                            id='aurora-btn'
+                                            className='button top'
+                                            value='aurora'
+                                            onClick={this.onModeSelection}
+                                        >Aurora
+                                        </Button>
+                                        <Button
+                                            id='aurora-lobe-btn'
+                                            className='button'
+                                            value='auroraLobe'
+                                            onClick={this.onModeSelection}
+                                            >Aurora Lobe
+                                        </Button>
+                                        <Button
+                                            id='stellar-ring-current-btn'
+                                            className='button bottom'
+                                            value='stellarRingCurrent'
+                                            onClick={this.onModeSelection}
+                                            >Stellar Ring Current
+                                        </Button>
                                     </div>
                                     <h4 className='control-selection-labels'>Voltage</h4>
                                     <div className='slider-container'>

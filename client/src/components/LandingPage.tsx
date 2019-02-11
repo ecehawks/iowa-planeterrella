@@ -2,9 +2,15 @@ import * as React from 'react';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+
 type LandingPageState = {
     voltage: number,
     airPressure: number,
+    showSignUp: boolean,
+    showSignIn: boolean,
+    showControls: boolean
 }
 
 type LandingPageProps = {};
@@ -17,7 +23,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.state = {
             voltage: 0,
             airPressure: 0,
+            showSignUp: true,
+            showSignIn: false,
+            showControls: false,
         };
+        this.showControlsOnClick = this.showControlsOnClick.bind(this);
+        this.showSignInOnClick = this.showSignInOnClick.bind(this);
+        this.showSignUpOnClick = this.showSignUpOnClick.bind(this);
     }
 
     onVoltageChange = (event: any) => {
@@ -30,6 +42,18 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({
             airPressure: event.target.value
         })
+    }
+
+    showSignInOnClick() {
+        this.setState({showSignUp: false, showSignIn: true})
+    }
+
+    showSignUpOnClick() {
+        this.setState({ showSignIn: false, showSignUp: true})
+    }
+
+    showControlsOnClick() {
+        this.setState({showControls: true, showSignIn: false, showSignUp: false})
     }
 
     render() {
@@ -54,8 +78,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                         <Col className='control-col' md={3}>
                             <div className='control-box'>
                                 <h2 className='heading control'>CONTROLS</h2>
-                                <Button id='join-btn' className='control-btn'>Join</Button>
-                                <div className='controls'>
+                                <SignUp isHidden={this.state.showSignUp} signInLink={this.showSignInOnClick}/>
+                                <SignIn isHidden={this.state.showSignIn} signUpLink={this.showSignUpOnClick} showControls={this.showControlsOnClick}/>
+                                <div id='controls' className={this.state.showControls ? 'controls' : 'no-controls'}>
                                     <h4 className='control-selection-labels'>Select Mode</h4>
                                     <div className='mode-select'>
                                         <Button id='aurora-btn' className='button top'>Aurora</Button>

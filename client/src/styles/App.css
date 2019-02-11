@@ -619,9 +619,9 @@
   background-image: linear-gradient(180deg, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5));
 }
 
-/* .controls {
+.no-controls {
   display: none;
-} */
+}
 
 .click-join-text {
   font-family: Montserrat, sans-serif;

@@ -30,12 +30,19 @@ const config = {
 
 let firebaseApp = firebase.initializeApp(config);
 let db = firebaseApp.database();
-let ref = db.ref("led_On");
-ref.on("value", function(snapshot) {
-  console.log("Key: " + snapshot.key + " Value: " + snapshot.val());
+let led_On_ref = db.ref("led_On/");
+
+// console.log the value of the db
+led_On_ref.on("value", function(snapshot) {
+  console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
 });
-// let update = {led_On: false};
-// ref.set(update);
+
+let db_ref = db.ref();
+db_ref.update({led_On: false});
+
+led_On_ref.on("value", function(snapshot) {
+  console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
+});
 
 export default class App extends React.Component<AppProps, AppState> {
 

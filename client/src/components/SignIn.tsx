@@ -27,6 +27,18 @@ export default class SignIn extends React.Component<SignInProps, SignInState> {
       password: '',
     };
   };
+
+  handleChangeEmail = async (event: any) => {
+    await this.setState({
+      email: event.target.value
+    });
+  }
+
+  handleChangePassword = async (event: any) => {
+    await this.setState({
+      password: event.target.value
+    });
+  }
   
   render() {
     const { email, password } = this.state;
@@ -35,12 +47,28 @@ export default class SignIn extends React.Component<SignInProps, SignInState> {
       <div id='sign-up' className={this.props.isHidden ? 'controls' : 'no-controls'}>
           <Form>
               <FormGroup>
-                  <Label for="exampleEmail">Email</Label>
-                  <Input type="email" name="email" id="exampleEmail" placeholder="Enter Your Email ..." />
+                  <Label for="signInEmail">Email</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="signInEmail"
+                    placeholder="Enter Your Email ..."
+                    onChange={ (e) => {
+                      this.handleChangeEmail(e);
+                  } }
+                  />
               </FormGroup>
               <FormGroup>
-                  <Label for="exampleEmail">Password</Label>
-                  <Input type="password" name="password" id='password' placeholder="Enter Your Password ..." />
+                  <Label for="signInPassword">Password</Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    id='signInPassword'
+                    placeholder="Enter Your Password ..."
+                    onChange={ (e) => {
+                      this.handleChangePassword(e);
+                  } }
+                />
               </FormGroup>
           </Form>
           <Button

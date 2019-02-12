@@ -80,21 +80,6 @@ export default class App extends React.Component<AppProps, AppState> {
           path='/history'
           render={(props) => <InfoPage {...props} infoProps={history} />}
         />
-
-
-        <p>{this.state.response}</p>
-        <form onSubmit={this.handleSubmit}>
-          <p>
-            <strong>Post to Server:</strong>
-          </p>
-          <input
-            type="text"
-            value={this.state.post}
-            onChange={e => this.setState({ post: e.target.value })}
-          />
-          <button type="submit">Submit</button>
-        </form>
-        <p>{this.state.responseToPost}</p>
         <Footer />
       </div>
     );

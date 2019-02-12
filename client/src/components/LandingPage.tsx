@@ -16,6 +16,7 @@ type LandingPageState = {
     showSignIn: boolean,
     showControls: boolean,
     successFailMessage: string,
+    mode: string
 }
 
 type LandingPageProps = {};
@@ -41,18 +42,18 @@ led_On_ref.on("value", function (snapshot) {
 let db_ref = db.ref();
 db_ref.update({ led_On: false });
 
-
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
 
     constructor(props: LandingPageProps) {
         super(props);
         this.state = {
-            voltage: 0,
             airPressure: 0,
+            mode: "aurora",
             showSignUp: true,
             showSignIn: false,
             showControls: false,
-            successFailMessage: ''
+            successFailMessage: '',
+            voltage: 0,
         };
         this.showControlsOnClick = this.showControlsOnClick.bind(this);
         this.showSignInOnClick = this.showSignInOnClick.bind(this);
@@ -64,12 +65,25 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({
             voltage: event.target.value
         })
+        db_ref.update({ voltage: event.target.value })
     }
 
     onAirPressureChange = (event: any) => {
         this.setState({
             airPressure: event.target.value
         })
+        db_ref.update({ air_pressure: event.target.value })
+    }
+
+    onModeSelection = (event: any) => {
+        console.log(event.target.value);
+        let value = event.target.value;
+        if (value == 'aurora' || value == 'auroraLobe' || value == 'stellarRingCurrent') {
+            this.setState({
+                mode: value
+            })
+            db_ref.update({ mode: value })
+        }
     }
 
     showSignInOnClick() {
@@ -178,14 +192,32 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 <div id='controls' className={(this.state.showControls || isLoggedIn) ? 'controls' : 'no-controls'}>
                                     <h4 className='control-selection-labels'>Select Mode</h4>
                                     <div className='mode-select'>
-                                        <Button id='aurora-btn' className='button top'>Aurora</Button>
-                                        <Button id='aurora-lobe-btn' className='button'>Aurora Lobe</Button>
-                                        <Button id='stellar-ring-current-btn' className='button bottom'>Stellar Ring Current</Button>
+                                        <Button 
+                                            id='aurora-btn'
+                                            className='button top'
+                                            value='aurora'
+                                            onClick={this.onModeSelection}
+                                        >Aurora
+                                        </Button>
+                                        <Button
+                                            id='aurora-lobe-btn'
+                                            className='button'
+                                            value='auroraLobe'
+                                            onClick={this.onModeSelection}
+                                            >Aurora Lobe
+                                        </Button>
+                                        <Button
+                                            id='stellar-ring-current-btn'
+                                            className='button bottom'
+                                            value='stellarRingCurrent'
+                                            onClick={this.onModeSelection}
+                                            >Stellar Ring Current
+                                        </Button>
                                     </div>
                                     <h4 className='control-selection-labels'>Voltage</h4>
                                     <div className='slider-container'>
                                         <form className="slider-box">
-                                            <input 
+                                            <input
                                                 type="range"
                                                 min="0"
                                                 max="800"
@@ -200,7 +232,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     <h4 className='control-selection-labels'>Air Pressure</h4>
                                     <div className='slider-container'>
                                         <form className="slider-box">
-                                            <input 
+                                            <input
                                                 type="range"
                                                 min="0"
                                                 max="800"

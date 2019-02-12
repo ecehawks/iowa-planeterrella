@@ -119,8 +119,14 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             if (!isError){
                 localStorage.setItem('User', email);
                 localStorage.setItem('isLoggedIn', 'true');
+                
+                let queue_ref = db.ref("queue/");
+                let queue = ['1', '2', '3'];
 
-                let queue = ['1', '2', '3']
+                queue_ref.on("value", function (snapshot) {
+                    console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
+                });
+                
                 queue.push(email);
                 db_ref.update({ queue });
                 this.setState({showControls: true, showSignIn: false, showSignUp: false});

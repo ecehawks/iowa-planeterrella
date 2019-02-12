@@ -12,7 +12,6 @@ type SignUpState = {
     confirmPassword: string,
     validate: {
         emailState: string,
-        passwordState: string,
         confirmPasswordState: string
     },
 };
@@ -33,7 +32,6 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
         confirmPassword: '',
         validate: {
             emailState: '',
-            passwordState: '',
             confirmPasswordState: ''
         },
     };
@@ -50,22 +48,10 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
     this.setState({ validate })
   }   
 
-  validatePassword() {
+  validateConfirmationPassword(event: any) {
     const { validate } = this.state;
 
-    if (this.state.confirmPassword !== this.state.password){
-        validate.confirmPasswordState = 'fail';
-        this.setState({validate});
-    }else{
-        validate.confirmPasswordState = 'success';
-        this.setState({validate});
-    }
-  }
-
-  validateConfirmationPassword() {
-    const { validate } = this.state;
-
-    if (this.state.confirmPassword !== this.state.password){
+    if (event.target.value !== this.state.password){
         validate.confirmPasswordState = 'fail';
         this.setState({validate});
     }else{
@@ -98,37 +84,36 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
         <div id='sign-up' className={this.props.isHidden ? 'controls' : 'no-controls'}>
             <Form>
                 <FormGroup>
-                    <Label for="exampleEmail">Email</Label>
+                    <Label for="email">Email</Label>
                     <Input
                         type="email"
                         name="email"
-                        id="exampleEmail"
+                        id="email"
                         placeholder="Enter Your Email ..."
+                        value={this.state.email}
                         valid={ this.state.validate.emailState === 'success' }
                         invalid={ this.state.validate.emailState === 'fail' }
                         onChange={ (e) => {
-                                    this.validateEmail(e)
-                                    this.handleChangeEmail(e)
+                                    this.handleChangeEmail(e);
+                                    this.validateEmail(e);
                                 } }
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="exampleEmail">Password</Label>
+                    <Label for="password">Password</Label>
                     <Input
                     type="password"
                     name="password"
                     id='password'
                     placeholder="Enter Your Password ..."
-                    valid={ this.state.validate.passwordState === 'success' }
-                    invalid={ this.state.validate.passwordState === 'fail' }
+                    value={this.state.password}
                     onChange={ (e) => {
-                                this.validatePassword()
-                                this.handleChangePassword(e)
+                                this.handleChangePassword(e);
                             } }
                 />
                 </FormGroup>                    
                 <FormGroup>
-                    <Label for="exampleEmail">Confirm Password</Label>
+                    <Label for="confirm-password">Confirm Password</Label>
                     <Input 
                         type="password"
                         name="confirm-password"
@@ -138,8 +123,8 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
                         valid={ this.state.validate.confirmPasswordState === 'success' }
                         invalid={ this.state.validate.confirmPasswordState === 'fail' }
                         onChange={ (e) => {
-                                    this.validateConfirmationPassword()
-                                    this.handleChangeConfirm(e)
+                                    this.handleChangeConfirm(e);
+                                    this.validateConfirmationPassword(e);
                                 } }
                     />
                     <FormFeedback valid>Valid</FormFeedback>

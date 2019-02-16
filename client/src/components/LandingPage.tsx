@@ -12,6 +12,7 @@ require('firebase/auth')
 type LandingPageState = {
     voltage: number,
     airPressure: number,
+    enableButtons: boolean,
     showSignUp: boolean,
     showSignIn: boolean,
     showControls: boolean,
@@ -49,6 +50,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         super(props);
         this.state = {
             airPressure: 0,
+            enableButtons: false,
             mode: "aurora",
             showSignUp: true,
             showSignIn: false,
@@ -154,7 +156,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 }
 
                 if (size < 2){
-                    this.startTimer('control', 10)
+                    this.setState({enableButtons: true});
+                    this.startTimer('control', 10);
                 }else{
                     this.startTimer('queue', size * 10) 
                 } 
@@ -293,6 +296,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             
             let queue = JSON.parse(localStorage.getItem('queue'));
             if (queue[Object.keys(queue)[0]] == email){
+                this.setState({enableButtons: true});
                 this.startTimer('control', 10);
             }else{
                 document.getElementById("video-label").innerHTML = 'Please Wait ...';
@@ -304,7 +308,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     render() {
 
-        let { airPressure, voltage } = this.state;
+        let { airPressure, voltage, enableButtons } = this.state;
         let isLoggedIn = false;
         let time = 0;
         if (localStorage.getItem('isLoggedIn') == 'true'){
@@ -359,6 +363,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             className='button top'
                                             value='aurora'
                                             onClick={this.onModeSelection}
+                                            disabled={!enableButtons}
                                         >Aurora
                                         </Button>
                                         <Button
@@ -366,6 +371,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             className='button'
                                             value='auroraLobe'
                                             onClick={this.onModeSelection}
+                                            disabled={!enableButtons}
                                             >Aurora Lobe
                                         </Button>
                                         <Button
@@ -373,6 +379,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             className='button bottom'
                                             value='stellarRingCurrent'
                                             onClick={this.onModeSelection}
+                                            disabled={!enableButtons}
                                             >Stellar Ring Current
                                         </Button>
                                     </div>
@@ -386,6 +393,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                                 value={voltage}
                                                 className="slider"
                                                 onChange={this.onVoltageChange}
+                                                disabled={!enableButtons}
                                             >
                                             </input>
                                         </form>
@@ -401,6 +409,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                                 value={airPressure}
                                                 className="slider"
                                                 onChange={this.onAirPressureChange}
+                                                disabled={!enableButtons}
                                             >
                                             </input>
                                         </form>

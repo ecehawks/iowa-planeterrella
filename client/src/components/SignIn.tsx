@@ -4,7 +4,6 @@ import FormGroup from 'reactstrap/lib/FormGroup';
 import Label from 'reactstrap/lib/Label';
 import Input from 'reactstrap/lib/Input';
 import Button from 'reactstrap/lib/Button';
-import NavLink from 'reactstrap/lib/NavLink';
 
 type SignInState = {
   email: string,
@@ -44,10 +43,10 @@ export default class SignIn extends React.Component<SignInProps, SignInState> {
     const { email, password } = this.state;
 
     return (
-      <div id='sign-up' className={this.props.isHidden ? 'controls' : 'no-controls'}>
+      <div id='sign-up' className={this.props.isHidden ? 'controls' : 'hide'}>
           <Form>
               <FormGroup>
-                  <Label for="signInEmail">Email</Label>
+                  <Label className='control-selection-labels' for="signInEmail">Email</Label>
                   <Input
                     type="email"
                     name="email"
@@ -59,7 +58,7 @@ export default class SignIn extends React.Component<SignInProps, SignInState> {
                   />
               </FormGroup>
               <FormGroup>
-                  <Label for="signInPassword">Password</Label>
+                  <Label className='control-selection-labels' for="signInPassword">Password</Label>
                   <Input
                     type="password"
                     name="password"
@@ -78,7 +77,7 @@ export default class SignIn extends React.Component<SignInProps, SignInState> {
           >
           Sign In
           </Button>
-          <NavLink onClick={this.props.signUpLink}>Register</NavLink>
+          <div className='link' onClick={this.props.signUpLink}>Register</div>
       </div>
     ); 
   }

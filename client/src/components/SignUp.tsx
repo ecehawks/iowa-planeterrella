@@ -81,10 +81,10 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
   render() {
     const { validate, email, password } = this.state;
     return (
-        <div id='sign-up' className={this.props.isHidden ? 'controls' : 'no-controls'}>
+        <div id='sign-up' className={this.props.isHidden ? 'controls' : 'hide'}>
             <Form>
                 <FormGroup>
-                    <Label for="email">Email</Label>
+                    <Label className='control-selection-labels' for="email">Email</Label>
                     <Input
                         type="email"
                         name="email"
@@ -100,7 +100,7 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="password">Password</Label>
+                    <Label className='control-selection-labels' for="password">Password</Label>
                     <Input
                     type="password"
                     name="password"
@@ -113,7 +113,7 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
                 />
                 </FormGroup>                    
                 <FormGroup>
-                    <Label for="confirm-password">Confirm Password</Label>
+                    <Label className='control-selection-labels' for="confirm-password">Confirm Password</Label>
                     <Input 
                         type="password"
                         name="confirm-password"
@@ -138,7 +138,7 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
             >
             Sign Up
             </Button>
-            <div onClick={this.props.signInLink}>Already have an account? Sign In.</div>
+            <div className='link' onClick={this.props.signInLink}>Already have an account? Sign In.</div>
         </div>
     );
   }

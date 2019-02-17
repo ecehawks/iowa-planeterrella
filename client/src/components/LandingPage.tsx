@@ -68,6 +68,17 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.startTimer = this.startTimer.bind(this);
     }
 
+    componentDidMount() {
+        if (localStorage.getItem('isLoggedIn') == 'true'){
+            const minutes = localStorage.getItem('minutes');
+            const seconds = localStorage.getItem('seconds');
+            const time = parseInt(minutes) + (parseInt(seconds) / 60);
+            this.startTimer(localStorage.getItem('type'), time);
+        }else{
+            localStorage.setItem('type','none');
+        }
+    }
+
     onVoltageChange = (event: any) => {
         this.setState({ voltage: event.target.value })
         db_ref.update({ voltage: event.target.value })
@@ -299,9 +310,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     timer.isControl = false;
                     timer.done = true;
                     this.setState({enableButtons: false});
-                }
-
-                if (timer.done && !timer.isControl){
                     this.signOutUser();
                 }
             }
@@ -309,13 +317,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     render() {
-
         let { airPressure, voltage, enableButtons } = this.state;
         let isLoggedIn = false;
         if (localStorage.getItem('isLoggedIn') == 'true'){
             isLoggedIn = true;
-        }else{
-            localStorage.setItem('type','none');
         }
         let videoLabelText = 'Sign In to Control the Planeterrella';
         
@@ -369,7 +374,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             value='stellarRingCurrent'
                                             onClick={this.onModeSelection}
                                             disabled={!enableButtons}
-                                            >Stellar Ring Current
+                                        >Stellar Ring Current
                                         </Button>
                                     </div>
                                     <h4 className='control-selection-labels'>Voltage</h4>

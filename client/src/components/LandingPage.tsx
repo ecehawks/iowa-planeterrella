@@ -11,7 +11,8 @@ require('firebase/auth')
 
 type LandingPageState = {
     voltage: number,
-    airPressure: number,
+    airPressure: string,
+    airPressureValue: number,
     enableButtons: boolean,
     showSignUp: boolean,
     showSignIn: boolean,
@@ -50,7 +51,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     constructor(props: LandingPageProps) {
         super(props);
         this.state = {
-            airPressure: 0,
+            airPressure: 'Low',
+            airPressureValue: 0,
             enableButtons: false,
             mode: "aurora",
             showSignUp: true,
@@ -73,6 +75,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             const minutes = localStorage.getItem('minutes');
             const seconds = localStorage.getItem('seconds');
             const time = parseInt(minutes) + (parseInt(seconds) / 60);
+            this.setState({ enableButtons: true })
             this.startTimer(localStorage.getItem('type'), time);
         }else{
             localStorage.setItem('type','none');
@@ -85,8 +88,18 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     onAirPressureChange = (event: any) => {
-        this.setState({ airPressure: event.target.value })
-        db_ref.update({ air_pressure: event.target.value })
+        this.setState({ airPressureValue: event.target.value })
+        console.log(event.target.value)
+        if (event.target.value == 0){
+            this.setState({ airPressure: 'Low' })
+            db_ref.update({ air_pressure: 'Low' })
+        } else if (event.target.value == 1){
+            this.setState({ airPressure: 'Mid' })
+            db_ref.update({ air_pressure: 'Mid' })
+        } else if (event.target.value == 2){
+            this.setState({ airPressure: 'High' })
+            db_ref.update({ air_pressure: 'High' })
+        }
     }
 
     onModeSelection = (event: any) => {
@@ -197,7 +210,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         let isError = false;
         let email = localStorage.getItem('User');
         localStorage.setItem('type', 'none');
-        this.setState({enableButtons: true});
+        this.setState({enableButtons: false});
 
         firebase.auth().signOut().then(function() {
             // Sign-out successful.
@@ -317,7 +330,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     render() {
-        let { airPressure, voltage, enableButtons } = this.state;
+        let { airPressure, airPressureValue, voltage, enableButtons } = this.state;
         let isLoggedIn = false;
         if (localStorage.getItem('isLoggedIn') == 'true'){
             isLoggedIn = true;
@@ -399,8 +412,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             <input
                                                 type="range"
                                                 min="0"
-                                                max="800"
-                                                value={airPressure}
+                                                max="2"
+                                                value={airPressureValue}
                                                 className="slider"
                                                 onChange={this.onAirPressureChange}
                                                 disabled={!enableButtons}

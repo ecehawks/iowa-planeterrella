@@ -122,24 +122,20 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     signUpUser(validate: any, email: string, password: string) {
         const { emailState, confirmPasswordState } = validate;
-        let isError = false;
 
         if (emailState && confirmPasswordState){
-            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+                this.setState({
+                    successFailMessage: 'Successfully Signed Up ' + email,
+                    showSignUp: false, 
+                    showSignIn: true});
+            }).catch(function(error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 console.log('Error Code ' + errorCode + ': ' + errorMessage);
-                isError = true;
-            });
-            if (!isError){
-                this.setState({
-                    successFailMessage: 'Successfully Signed Up ' + email,
-                    showSignUp: false, 
-                    showSignIn: true})
-            }else{
-                this.setState({successFailMessage: 'Error Signing Up User - Try Again Later'});
-            }
+                this.setState({successFailMessage: errorMessage});
+            }.bind(this));
         }
         else{
             this.setState({successFailMessage: 'Incorrect email/password'});
@@ -148,18 +144,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     signInUser(email: string, password: string) {
-        let isError = false;
-
         if (email !== '' && password !== ''){
-            firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.log('Error Code ' + errorCode + ': ' + errorMessage);
-                isError = true;
-            });
-
-            if (!isError){
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
                 localStorage.setItem('User', email);
                 localStorage.setItem('isLoggedIn', 'true');
                 
@@ -194,10 +180,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     showSignIn: false, 
                     showSignUp: false
                 });
-            }else{
-                this.setState({successFailMessage: 'Error Signing In - Try Again Later'});
-            }
-
+            }).catch(function(error: any) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log('Error Code ' + errorCode + ': ' + errorMessage);
+                this.setState({successFailMessage: errorMessage});
+            }.bind(this));
         }
         else{
             this.setState({successFailMessage: 'Input email/password'});
@@ -264,7 +253,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     startTimer(type: string, time: number) {
-        console.log(time)
         let email = localStorage.getItem('User');
         
         localStorage.setItem('type', type);

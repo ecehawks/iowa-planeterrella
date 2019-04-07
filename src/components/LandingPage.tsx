@@ -89,7 +89,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     onAirPressureChange = (event: any) => {
         this.setState({ airPressureValue: event.target.value })
-        console.log(event.target.value)
         if (event.target.value == 0){
             this.setState({ airPressure: 'Low' })
             db_ref.update({ air_pressure: 'Low' })
@@ -159,18 +158,14 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 let queue = JSON.parse(localStorage.getItem('queue'));
                 let size = Object.keys(queue).length;
 
-                if (queue[Object.keys(queue)[0]] === 'NA'){
-                    queue[Object.keys(queue)[0]] = email;
-                    db_ref.update({ queue })
-                }else{
-                    queue_ref.push(email)
-                }
+                queue_ref.push(email);
+                size++;
 
-                if (size < 2){
+                if (size == 2){
                     this.setState({enableButtons: true});
                     this.startTimer('control', 10);
                 }else{
-                    size--;
+                    size = size - 2;
                     this.startTimer('queue', size * 10) 
                 } 
 
@@ -288,7 +283,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             
             let queue = JSON.parse(localStorage.getItem('queue'));
           
-            if (distance < 0 || (queue[Object.keys(queue)[0]] == email && !timer.isControl)) {
+            if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
                 clearInterval(this.interval);
                 this.interval = null;
                 if (!timer.isControl){
@@ -301,7 +296,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     });
                     
                     let queue = JSON.parse(localStorage.getItem('queue'));
-                    if (queue[Object.keys(queue)[0]] == email){
+                    if (queue[Object.keys(queue)[1]] == email){
                         this.setState({enableButtons: true});
                         this.startTimer('control', 10);
                     }else{

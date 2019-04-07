@@ -161,11 +161,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 console.log(queue)
 
                 queue_ref.push(email);
+                size++;
 
-                if (size == 1){
+                if (size == 2){
                     this.setState({enableButtons: true});
                     this.startTimer('control', 10);
                 }else{
+                    size = size - 2;
                     this.startTimer('queue', size * 10) 
                 } 
 

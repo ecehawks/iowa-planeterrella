@@ -158,20 +158,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 
                 let queue = JSON.parse(localStorage.getItem('queue'));
                 let size = Object.keys(queue).length;
-                let deleteKey = '';
                 console.log(queue)
 
                 if (queue[Object.keys(queue)[0]] === 'NA'){
-                    queue.push(email);
-                    queue_ref.push()
-                    console.log(queue)
-                    for(var key in queue){
-                        if ( queue[key] == 'NA') {
-                            deleteKey = key;
-                        }
-                    }
-                    delete queue[deleteKey];
-                    db_ref.update({ queue });                   
+                    queue_ref.push(email);                   
                     console.log(queue)
                 }else{
                     queue_ref.push(email);

@@ -89,7 +89,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     onAirPressureChange = (event: any) => {
         this.setState({ airPressureValue: event.target.value })
-        console.log(event.target.value)
         if (event.target.value == 0){
             this.setState({ airPressure: 'Low' })
             db_ref.update({ air_pressure: 'Low' })
@@ -158,7 +157,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 
                 let queue = JSON.parse(localStorage.getItem('queue'));
                 let size = Object.keys(queue).length;
-                console.log(queue)
 
                 queue_ref.push(email);
                 size++;
@@ -284,7 +282,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             });
             
             let queue = JSON.parse(localStorage.getItem('queue'));
-            console.log(queue);
           
             if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
                 clearInterval(this.interval);
@@ -299,7 +296,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     });
                     
                     let queue = JSON.parse(localStorage.getItem('queue'));
-                    console.log(queue);
                     if (queue[Object.keys(queue)[1]] == email){
                         this.setState({enableButtons: true});
                         this.startTimer('control', 10);

@@ -1,6 +1,7 @@
 {
   "name": "iowa-planeterrella",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Example on using create-react-app with a Node Express Backend",	
   "license": "MIT",
   "dependencies": {
     "@firebase/app-types": "^0.3.3",
@@ -29,7 +30,6 @@
     "test": "jest",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:5000/",
   "browserslist": [
     ">0.2%",
     "not dead",

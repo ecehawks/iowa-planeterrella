@@ -129,7 +129,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     successFailMessage: 'Successfully Signed Up ' + email,
                     showSignUp: false, 
                     showSignIn: true});
-            }).catch(function(error: any) {
+            }.bind(this)).catch(function(error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -180,7 +180,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     showSignIn: false, 
                     showSignUp: false
                 });
-            }).catch(function(error: any) {
+            }.bind(this)).catch(function(error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;

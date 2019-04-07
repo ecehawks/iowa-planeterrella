@@ -160,15 +160,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 let size = Object.keys(queue).length;
                 console.log(queue)
 
-                if (queue[Object.keys(queue)[0]] === 'NA'){
-                    queue_ref.push(email);                   
-                    console.log(queue)
-                }else{
-                    queue_ref.push(email);
-                    size++;
-                }
+                queue_ref.push(email);
+                size++;
 
-                if (size == 1){
+                if (size == 2){
                     this.setState({enableButtons: true});
                     this.startTimer('control', 10);
                 }else{
@@ -235,12 +230,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             let size = Object.keys(queue).length;
             let deleteKey = '';
 
-            console.log(queue)
-            console.log(size)
-            if (queue[0] == null) {
-                size--;
-            }
-
             if (size > 1){
                 for(var key in queue){
                     if ( queue[key] == email) {
@@ -295,8 +284,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             });
             
             let queue = JSON.parse(localStorage.getItem('queue'));
+            console.log(queue);
           
-            if (distance < 0 || (queue[Object.keys(queue)[0]] == email && !timer.isControl)) {
+            if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
                 clearInterval(this.interval);
                 this.interval = null;
                 if (!timer.isControl){
@@ -309,6 +299,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     });
                     
                     let queue = JSON.parse(localStorage.getItem('queue'));
+                    console.log(queue);
                     if (queue[Object.keys(queue)[1]] == email){
                         this.setState({enableButtons: true});
                         this.startTimer('control', 10);

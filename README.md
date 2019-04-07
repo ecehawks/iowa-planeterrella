@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-This project uses yarn instead of npm. Do not use npm commands in this proejct to avoid dependency discrepancies.
+This project uses `yarn` instead of `npm`. Do not use `npm` commands in this proejct to avoid dependency discrepancies.
 
 ## Available Scripts
 

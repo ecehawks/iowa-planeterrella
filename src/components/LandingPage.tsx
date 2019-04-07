@@ -158,15 +158,26 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 
                 let queue = JSON.parse(localStorage.getItem('queue'));
                 let size = Object.keys(queue).length;
+                let deleteKey = '';
+                console.log(queue)
 
                 if (queue[Object.keys(queue)[0]] === 'NA'){
-                    queue[Object.keys(queue)[0]] = email;
-                    db_ref.update({ queue })
+                    queue.push(email);
+                    console.log(queue)
+                    for(var key in queue){
+                        if ( queue[key] == 'NA') {
+                            deleteKey = key;
+                        }
+                    }
+                    delete queue[deleteKey];
+                    db_ref.update({ queue });                   
+                    console.log(queue)
                 }else{
-                    queue_ref.push(email)
+                    queue_ref.push(email);
+                    size++;
                 }
 
-                if (size < 2){
+                if (size == 1){
                     this.setState({enableButtons: true});
                     this.startTimer('control', 10);
                 }else{
@@ -232,6 +243,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             let queue = JSON.parse(localStorage.getItem('queue'));
             let size = Object.keys(queue).length;
             let deleteKey = '';
+
+            console.log(size)
 
             if (size > 1){
                 for(var key in queue){

@@ -94,8 +94,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             this.setState({ airPressure: 'Low' })
             db_ref.update({ air_pressure: 'Low' })
         } else if (event.target.value == 1){
-            this.setState({ airPressure: 'Mid' })
-            db_ref.update({ air_pressure: 'Mid' })
+            this.setState({ airPressure: 'Medium' })
+            db_ref.update({ air_pressure: 'Medium' })
         } else if (event.target.value == 2){
             this.setState({ airPressure: 'High' })
             db_ref.update({ air_pressure: 'High' })
@@ -104,7 +104,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     onModeSelection = (event: any) => {
         let value = event.target.value;
-        if (value == 'aurora' || value == 'auroraLobe' || value == 'stellarRingCurrent') {
+        if (value == 'Aurora' || value == 'Belt' || value == 'Ring') {
             this.setState({
                 mode: value
             })
@@ -129,7 +129,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     successFailMessage: 'Successfully Signed Up ' + email,
                     showSignUp: false, 
                     showSignIn: true});
-            }).catch(function(error: any) {
+            }.bind(this)).catch(function(error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -180,7 +180,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     showSignIn: false, 
                     showSignUp: false
                 });
-            }).catch(function(error: any) {
+            }.bind(this)).catch(function(error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -356,7 +356,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                         <Button 
                                             id='aurora-btn'
                                             className='button top'
-                                            value='aurora'
+                                            value='Aurora'
                                             onClick={this.onModeSelection}
                                             disabled={!enableButtons}
                                         >Aurora
@@ -364,7 +364,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                         <Button
                                             id='aurora-lobe-btn'
                                             className='button'
-                                            value='auroraLobe'
+                                            value='Belt'
                                             onClick={this.onModeSelection}
                                             disabled={!enableButtons}
                                         >Aurora Lobe
@@ -372,7 +372,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                         <Button
                                             id='stellar-ring-current-btn'
                                             className='button bottom'
-                                            value='stellarRingCurrent'
+                                            value='Ring'
                                             onClick={this.onModeSelection}
                                             disabled={!enableButtons}
                                         >Stellar Ring Current

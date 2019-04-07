@@ -309,7 +309,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     });
                     
                     let queue = JSON.parse(localStorage.getItem('queue'));
-                    if (queue[Object.keys(queue)[0]] == email){
+                    if (queue[Object.keys(queue)[1]] == email){
                         this.setState({enableButtons: true});
                         this.startTimer('control', 10);
                     }else{

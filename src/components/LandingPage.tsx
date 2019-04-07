@@ -163,6 +163,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
                 if (queue[Object.keys(queue)[0]] === 'NA'){
                     queue.push(email);
+                    queue_ref.push()
                     console.log(queue)
                     for(var key in queue){
                         if ( queue[key] == 'NA') {
@@ -244,7 +245,11 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             let size = Object.keys(queue).length;
             let deleteKey = '';
 
+            console.log(queue)
             console.log(size)
+            if (queue[0] == null) {
+                size--;
+            }
 
             if (size > 1){
                 for(var key in queue){

@@ -26,21 +26,21 @@ type LandingPageState = {
 type LandingPageProps = {};
 
 const config = {
-    apiKey: "AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU",
-    authDomain: "ui-planeterrella.firebaseapp.com",
-    databaseURL: "https://ui-planeterrella.firebaseio.com",
-    projectId: "ui-planeterrella",
-    storageBucket: "<BUCKET>.appspot.com",
-    messagingSenderId: "433273184604"
+    apiKey: 'AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU',
+    authDomain: 'ui-planeterrella.firebaseapp.com',
+    databaseURL: 'https://ui-planeterrella.firebaseio.com',
+    projectId: 'ui-planeterrella',
+    storageBucket: '<BUCKET>.appspot.com',
+    messagingSenderId: '433273184604'
 };
 
 let firebaseApp = firebase.initializeApp(config);
 let db = firebaseApp.database();
-let led_On_ref = db.ref("led_On/");
+let led_On_ref = db.ref('led_On/');
 
 // console.log the value of the db
-led_On_ref.on("value", function (snapshot) {
-    console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
+led_On_ref.on('value', function (snapshot) {
+    console.log('Key: ' + snapshot.key + ', Value: ' + snapshot.val());
 });
 
 let db_ref = db.ref();
@@ -55,7 +55,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             airPressure: 'Low',
             airPressureValue: 0,
             enableButtons: false,
-            mode: "aurora",
+            mode: 'aurora',
             showSignUp: true,
             showSignIn: false,
             showControls: false,
@@ -73,6 +73,11 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     componentDidMount() {
+        window.addEventListener('beforeunload', () => 
+        {  
+            this.signOutUser();
+        });
+
         if (localStorage.getItem('isLoggedIn') == 'true'){
             const minutes = localStorage.getItem('minutes');
             const seconds = localStorage.getItem('seconds');
@@ -88,8 +93,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({ voltageControl: event.target.value })
         db_ref.update({ voltageControl: event.target.value })
 
-        let voltage_ref = db.ref("voltage/");
-        voltage_ref.once("value")
+        let voltage_ref = db.ref('voltage/');
+        voltage_ref.once('value')
             .then(function(snapshot: any) {
                 this.setState({ voltage: snapshot.val() })
         }.bind(this));
@@ -156,9 +161,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 localStorage.setItem('User', email);
                 localStorage.setItem('isLoggedIn', 'true');
                 
-                let queue_ref = db.ref("queue/");
+                let queue_ref = db.ref('queue/');
 
-                queue_ref.once("value")
+                queue_ref.once('value')
                     .then(function(snapshot) {
                         localStorage.setItem('queue', JSON.stringify(snapshot.val()));
                 });
@@ -217,7 +222,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         if (!isError){
             localStorage.setItem('isLoggedIn', 'false');
 
-            document.getElementById("video-label").innerHTML = 'Sign In to Control the Planeterrella';
+            document.getElementById('video-label').innerHTML = 'Sign In to Control the Planeterrella';
             this.setState({
                 successFailMessage: 'Successfully Signed Out ' + email,
                 showControls: false,
@@ -226,8 +231,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             });
 
             
-            let queue_ref = db.ref("queue/");
-            queue_ref.once("value")
+            let queue_ref = db.ref('queue/');
+            queue_ref.once('value')
                 .then(function(snapshot) {
                     localStorage.setItem('queue', JSON.stringify(snapshot.val()));
             });
@@ -243,8 +248,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     }
                 }
                 delete queue[deleteKey]
-            } else{
-                queue = ['NA']
             }
             
             db_ref.update({ queue });
@@ -277,14 +280,14 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             localStorage.setItem('seconds', seconds.toString());
           
             if (timer.isControl){
-                document.getElementById("video-label").innerHTML = minutes + ' min ' + seconds + ' sec left';
+                document.getElementById('video-label').innerHTML = minutes + ' min ' + seconds + ' sec left';
             }else {
-                document.getElementById("video-label").innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
+                document.getElementById('video-label').innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
             }
             
 
-            let queue_ref = db.ref("queue/");
-            queue_ref.once("value")
+            let queue_ref = db.ref('queue/');
+            queue_ref.once('value')
                 .then(function(snapshot) {
                     localStorage.setItem('queue', JSON.stringify(snapshot.val()));
             });
@@ -297,8 +300,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 if (!timer.isControl){
                     timer.isControl = true;
                     timer.done = true;
-                    let queue_ref = db.ref("queue/");
-                    queue_ref.once("value")
+                    let queue_ref = db.ref('queue/');
+                    queue_ref.once('value')
                         .then(function(snapshot) {
                             localStorage.setItem('queue', JSON.stringify(snapshot.val()));
                     });
@@ -308,7 +311,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                         this.setState({enableButtons: true});
                         this.startTimer('control', 10);
                     }else{
-                        document.getElementById("video-label").innerHTML = 'Please Wait ...';
+                        document.getElementById('video-label').innerHTML = 'Please Wait ...';
                     }
                 } else {
                     timer.isControl = false;
@@ -383,13 +386,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     </div>
                                     <h4 className='control-selection-labels'>Voltage</h4>
                                     <div className='slider-container'>
-                                        <form className="slider-box">
+                                        <form className='slider-box'>
                                             <input
-                                                type="range"
-                                                min="0"
-                                                max="100"
+                                                type='range'
+                                                min='0'
+                                                max='100'
                                                 value={voltageControl}
-                                                className="slider"
+                                                className='slider'
                                                 onChange={this.onVoltageChange}
                                                 disabled={!enableButtons}
                                             >
@@ -399,13 +402,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     </div>
                                     <h4 className='control-selection-labels'>Air Pressure</h4>
                                     <div className='slider-container'>
-                                        <form className="slider-box">
+                                        <form className='slider-box'>
                                             <input
-                                                type="range"
-                                                min="0"
-                                                max="2"
+                                                type='range'
+                                                min='0'
+                                                max='2'
                                                 value={airPressureValue}
-                                                className="slider"
+                                                className='slider'
                                                 onChange={this.onAirPressureChange}
                                                 disabled={!enableButtons}
                                             >

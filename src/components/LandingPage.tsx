@@ -370,7 +370,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             value='Belt'
                                             onClick={this.onModeSelection}
                                             disabled={!enableButtons}
-                                        >Aurora Lobe
+                                        >Van Allen Belt
                                         </Button>
                                         <Button
                                             id='stellar-ring-current-btn'

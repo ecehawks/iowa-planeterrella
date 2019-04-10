@@ -11,6 +11,7 @@ require('firebase/auth')
 
 type LandingPageState = {
     voltage: number,
+    voltageControl: number,
     airPressure: string,
     airPressureValue: number,
     enableButtons: boolean,
@@ -60,6 +61,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             showControls: false,
             successFailMessage: '',
             voltage: 0,
+            voltageControl: 0,
             queue: [],
         };
         this.signInUser = this.signInUser.bind(this);
@@ -83,8 +85,14 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     onVoltageChange = (event: any) => {
-        this.setState({ voltage: event.target.value })
-        db_ref.update({ voltage: event.target.value })
+        this.setState({ voltageControl: event.target.value })
+        db_ref.update({ voltageControl: event.target.value })
+
+        let voltage_ref = db.ref("voltage/");
+        voltage_ref.once("value")
+            .then(function(snapshot: any) {
+                this.setState({ voltage: snapshot.val() })
+        }.bind(this));
     }
 
     onAirPressureChange = (event: any) => {
@@ -313,7 +321,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     render() {
-        let { airPressure, airPressureValue, voltage, enableButtons } = this.state;
+        let { airPressure, airPressureValue, voltageControl, voltage, enableButtons } = this.state;
         let isLoggedIn = false;
         if (localStorage.getItem('isLoggedIn') == 'true'){
             isLoggedIn = true;
@@ -379,8 +387,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             <input
                                                 type="range"
                                                 min="0"
-                                                max="800"
-                                                value={voltage}
+                                                max="100"
+                                                value={voltageControl}
                                                 className="slider"
                                                 onChange={this.onVoltageChange}
                                                 disabled={!enableButtons}
@@ -403,7 +411,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             >
                                             </input>
                                         </form>
-                                        <div className='text-block-3'>{airPressure} Pa</div>
+                                        <div className='text-block-3'>{airPressure}</div>
                                     </div>
                                     <Button
                                         className='control-btn'

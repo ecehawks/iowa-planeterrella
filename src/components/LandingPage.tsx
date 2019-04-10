@@ -73,7 +73,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     onVoltageChange = (event: any) => {
         this.setState({ voltageControl: event.target.value })
-        this.db_ref.update({ voltageControl: event.target.value })
+        this.db_ref.update({ Voltage_Control: event.target.value })
 
         let voltage_ref = this.props.db.ref('voltage/');
         voltage_ref.once('value')

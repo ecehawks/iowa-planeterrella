@@ -23,31 +23,14 @@ type LandingPageState = {
     queue: any[],
 }
 
-type LandingPageProps = {};
-
-const config = {
-    apiKey: 'AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU',
-    authDomain: 'ui-planeterrella.firebaseapp.com',
-    databaseURL: 'https://ui-planeterrella.firebaseio.com',
-    projectId: 'ui-planeterrella',
-    storageBucket: '<BUCKET>.appspot.com',
-    messagingSenderId: '433273184604'
+type LandingPageProps = {
+    startTimer: (type: string, time: number) => void;
+    clearTimer: () => void;
+    db: any;
 };
 
-let firebaseApp = firebase.initializeApp(config);
-let db = firebaseApp.database();
-let led_On_ref = db.ref('led_On/');
-
-// console.log the value of the db
-led_On_ref.on('value', function (snapshot) {
-    console.log('Key: ' + snapshot.key + ', Value: ' + snapshot.val());
-});
-
-let db_ref = db.ref();
-db_ref.update({ led_On: false });
-
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
-    private interval = null as any;
+    private db_ref = this.props.db.ref();
 
     constructor(props: LandingPageProps) {
         super(props);
@@ -69,7 +52,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.showSignUpOnClick = this.showSignUpOnClick.bind(this);
         this.signUpUser = this.signUpUser.bind(this);
         this.signOutUser = this.signOutUser.bind(this);
-        this.startTimer = this.startTimer.bind(this);
     }
 
     componentDidMount() {
@@ -83,7 +65,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             const seconds = localStorage.getItem('seconds');
             const time = parseInt(minutes) + (parseInt(seconds) / 60);
             this.setState({ enableButtons: true })
-            this.startTimer(localStorage.getItem('type'), time);
+            this.props.startTimer(localStorage.getItem('type'), time);
         }else{
             localStorage.setItem('type','none');
         }
@@ -91,9 +73,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     onVoltageChange = (event: any) => {
         this.setState({ voltageControl: event.target.value })
-        db_ref.update({ voltageControl: event.target.value })
+        this.db_ref.update({ voltageControl: event.target.value })
 
-        let voltage_ref = db.ref('voltage/');
+        let voltage_ref = this.props.db.ref('voltage/');
         voltage_ref.once('value')
             .then(function(snapshot: any) {
                 this.setState({ voltage: snapshot.val() })
@@ -104,13 +86,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({ airPressureValue: event.target.value })
         if (event.target.value == 0){
             this.setState({ airPressure: 'Low' })
-            db_ref.update({ air_pressure: 'Low' })
+            this.db_ref.update({ air_pressure: 'Low' })
         } else if (event.target.value == 1){
             this.setState({ airPressure: 'Medium' })
-            db_ref.update({ air_pressure: 'Medium' })
+            this.db_ref.update({ air_pressure: 'Medium' })
         } else if (event.target.value == 2){
             this.setState({ airPressure: 'High' })
-            db_ref.update({ air_pressure: 'High' })
+            this.db_ref.update({ air_pressure: 'High' })
         }
     }
 
@@ -120,7 +102,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             this.setState({
                 mode: value
             })
-            db_ref.update({ mode: value })
+            this.db_ref.update({ mode: value })
         }
     }
 
@@ -161,10 +143,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 localStorage.setItem('User', email);
                 localStorage.setItem('isLoggedIn', 'true');
                 
-                let queue_ref = db.ref('queue/');
+                let queue_ref = this.props.db.ref('queue/');
 
                 queue_ref.once('value')
-                    .then(function(snapshot) {
+                    .then(function(snapshot: any) {
                         localStorage.setItem('queue', JSON.stringify(snapshot.val()));
                 });
                 
@@ -176,10 +158,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
                 if (size == 2){
                     this.setState({enableButtons: true});
-                    this.startTimer('control', 10);
+                     this.props.startTimer('control', 10);
                 }else{
                     size = size - 2;
-                    this.startTimer('queue', size * 10) 
+                     this.props.startTimer('queue', size * 10) 
                 } 
 
                 this.setState({
@@ -202,7 +184,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     signOutUser() {
-        clearInterval(this.interval);
+        this.props.clearTimer();
 
         let isError = false;
         let email = localStorage.getItem('User');
@@ -231,9 +213,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             });
 
             
-            let queue_ref = db.ref('queue/');
+            let queue_ref = this.props.db.ref('queue/');
             queue_ref.once('value')
-                .then(function(snapshot) {
+                .then(function(snapshot: any) {
                     localStorage.setItem('queue', JSON.stringify(snapshot.val()));
             });
             
@@ -250,7 +232,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 delete queue[deleteKey]
             }
             
-            db_ref.update({ queue });
+            this.db_ref.update({ queue });
             
             localStorage.setItem('User', '');
         }else{
@@ -258,70 +240,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }
     }
 
-    startTimer(type: string, time: number) {
-        let email = localStorage.getItem('User');
-        
-        localStorage.setItem('type', type);
-        const timer = {
-            isControl: (type == 'control'),
-            done: false,
-        }
-
-        let expirationDate = new Date();
-        expirationDate.setMinutes( expirationDate.getMinutes() + time );
-
-        this.interval = setInterval(function() {
-            var now = new Date().getTime();
-            var distance = expirationDate.getTime() - now;
-          
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            localStorage.setItem('minutes', minutes.toString());
-            localStorage.setItem('seconds', seconds.toString());
-          
-            if (timer.isControl){
-                document.getElementById('video-label').innerHTML = minutes + ' min ' + seconds + ' sec left';
-            }else {
-                document.getElementById('video-label').innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
-            }
-            
-
-            let queue_ref = db.ref('queue/');
-            queue_ref.once('value')
-                .then(function(snapshot) {
-                    localStorage.setItem('queue', JSON.stringify(snapshot.val()));
-            });
-            
-            let queue = JSON.parse(localStorage.getItem('queue'));
-          
-            if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
-                clearInterval(this.interval);
-                this.interval = null;
-                if (!timer.isControl){
-                    timer.isControl = true;
-                    timer.done = true;
-                    let queue_ref = db.ref('queue/');
-                    queue_ref.once('value')
-                        .then(function(snapshot) {
-                            localStorage.setItem('queue', JSON.stringify(snapshot.val()));
-                    });
-                    
-                    let queue = JSON.parse(localStorage.getItem('queue'));
-                    if (queue[Object.keys(queue)[1]] == email){
-                        this.setState({enableButtons: true});
-                        this.startTimer('control', 10);
-                    }else{
-                        document.getElementById('video-label').innerHTML = 'Please Wait ...';
-                    }
-                } else {
-                    timer.isControl = false;
-                    timer.done = true;
-                    this.setState({enableButtons: false});
-                    this.signOutUser();
-                }
-            }
-        }.bind(this), 1000);
-    }
 
     render() {
         let { airPressure, airPressureValue, voltageControl, voltage, enableButtons } = this.state;

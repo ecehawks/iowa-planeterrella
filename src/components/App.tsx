@@ -50,6 +50,10 @@ export default class App extends React.Component<AppProps, AppState> {
       .catch(err => console.log(err));
   }
 
+  componentWillUnmount() {
+    this.clearTimer();
+  }
+
   callApi = async () => {
     const response = await fetch('/api/hello');
     const body = await response.json();
@@ -70,7 +74,7 @@ export default class App extends React.Component<AppProps, AppState> {
     this.setState({ responseToPost: body });
   };
 
-  startTimer(type: string, time: number) {
+  startTimer(type: string, duration: number) {
     let email = localStorage.getItem('User');
     
     localStorage.setItem('type', type);
@@ -80,7 +84,7 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     let expirationDate = new Date();
-    expirationDate.setMinutes( expirationDate.getMinutes() + time );
+    expirationDate.setMinutes( expirationDate.getMinutes() + duration );
 
     this.interval = setInterval(function() {
         var now = new Date().getTime();

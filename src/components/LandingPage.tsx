@@ -55,6 +55,11 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     componentDidMount() {
+        window.addEventListener('beforeunload', () => 
+        {  
+            this.signOutUser();
+        });
+
         if (localStorage.getItem('isLoggedIn') == 'true'){
             const minutes = localStorage.getItem('minutes');
             const seconds = localStorage.getItem('seconds');

@@ -11,9 +11,7 @@ import { aurora, history, stellar, varb } from '../info';
 
 import { Route } from 'react-router-dom';
 
-type AppState = {
-  enableButtons: boolean,
-};
+type AppState = {};
 
 type AppProps = {};
 
@@ -33,9 +31,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
   constructor(props: AppProps) {
     super(props);
-    this.state = { 
-      enableButtons: false,
-    };
+    this.state = {};
   };
 
   componentDidMount() {}

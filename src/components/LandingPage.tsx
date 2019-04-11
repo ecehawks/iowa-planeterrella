@@ -24,13 +24,13 @@ type LandingPageState = {
 }
 
 type LandingPageProps = {
-    startTimer: (type: string, time: number) => void;
     clearTimer: () => void;
     db: any;
 };
 
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
     private db_ref = this.props.db.ref();
+    public interval = null as any;
 
     constructor(props: LandingPageProps) {
         super(props);
@@ -55,17 +55,12 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     componentDidMount() {
-        window.addEventListener('beforeunload', () => 
-        {  
-            this.signOutUser();
-        });
-
         if (localStorage.getItem('isLoggedIn') == 'true'){
             const minutes = localStorage.getItem('minutes');
             const seconds = localStorage.getItem('seconds');
             const time = parseInt(minutes) + (parseInt(seconds) / 60);
             this.setState({ enableButtons: true })
-            this.props.startTimer(localStorage.getItem('type'), time);
+            this.startTimer(localStorage.getItem('type'), time);
         }else{
             localStorage.setItem('type','none');
         }
@@ -158,10 +153,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
                 if (size == 2){
                     this.setState({enableButtons: true});
-                     this.props.startTimer('control', 10);
+                    this.startTimer('control', 10);
                 }else{
                     size = size - 2;
-                     this.props.startTimer('queue', size * 10) 
+                    this.startTimer('queue', size * 10) 
                 } 
 
                 this.setState({
@@ -183,14 +178,73 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }
     }
 
-    signOutUser() {
+    startTimer(type: string, duration: number) {
+        let email = localStorage.getItem('User');
+        const timer = {
+            isControl: (type == 'control'),
+            done: false,
+        }
+    
+        let expirationDate = new Date();
+        expirationDate.setMinutes( expirationDate.getMinutes() + duration );
+    
+        this.interval = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = expirationDate.getTime() - now;
+          
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+            if (timer.isControl){
+                document.getElementById('video-label').innerHTML = minutes + ' min ' + seconds + ' sec left';
+            }else {
+                document.getElementById('video-label').innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
+            }
+            
+    
+            let queue_ref = this.props.db.ref('queue/');
+            queue_ref.once('value')
+                .then(function(snapshot: any) {
+                    localStorage.setItem('queue', JSON.stringify(snapshot.val()));
+            });
+            
+            let queue = JSON.parse(localStorage.getItem('queue'));
+          
+            if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
+                clearInterval(this.interval);
+                this.interval = null;
+                if (!timer.isControl){
+                    timer.isControl = true;
+                    timer.done = true;
+                    let queue_ref = this.props.db.ref('queue/');
+                    queue_ref.once('value')
+                        .then(function(snapshot: any) {
+                            localStorage.setItem('queue', JSON.stringify(snapshot.val()));
+                    });
+                    
+                    let queue = JSON.parse(localStorage.getItem('queue'));
+                    if (queue[Object.keys(queue)[1]] == email){
+                        this.setState({enableButtons: true});
+                        this.startTimer('control', 10);
+                    }else{
+                        document.getElementById('video-label').innerHTML = 'Please Wait ...';
+                    }
+                } else {
+                    timer.isControl = false;
+                    timer.done = true;
+                    this.setState({enableButtons: false});
+                    this.child.current.signOutUser();
+                }
+            }
+        }.bind(this), 1000);
+      }
+    
+      signOutUser() {
         this.props.clearTimer();
-
+    
         let isError = false;
         let email = localStorage.getItem('User');
-        localStorage.setItem('type', 'none');
-        this.setState({enableButtons: false});
-
+    
         firebase.auth().signOut().then(function() {
             // Sign-out successful.
         }).catch(function(error) {
@@ -200,18 +254,20 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             console.log('Error Code ' + errorCode + ': ' + errorMessage);
             isError = true;
         });
-
+    
         if (!isError){
             localStorage.setItem('isLoggedIn', 'false');
-
+    
             document.getElementById('video-label').innerHTML = 'Sign In to Control the Planeterrella';
+            document.getElementById('success-fail-message').innerHTML = 'Successfully Signed Out ' + email;
+    
             this.setState({
-                successFailMessage: 'Successfully Signed Out ' + email,
+                enableButtons: false,
                 showControls: false,
                 showSignIn: true,
                 showSignUp: false,
             });
-
+    
             
             let queue_ref = this.props.db.ref('queue/');
             queue_ref.once('value')
@@ -222,7 +278,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             let queue = JSON.parse(localStorage.getItem('queue'));
             let size = Object.keys(queue).length;
             let deleteKey = '';
-
+    
             if (size > 1){
                 for(var key in queue){
                     if ( queue[key] == email) {
@@ -232,13 +288,12 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 delete queue[deleteKey]
             }
             
-            this.db_ref.update({ queue });
-            
-            localStorage.setItem('User', '');
+            let db_ref = this.props.db.ref();
+            db_ref.update({ queue });
         }else{
-            this.setState({successFailMessage: 'Error Signing Out - Try Again Later'});
+          document.getElementById('success-fail-message').innerHTML = 'Error Signing Out - Try Again Later';
         }
-    }
+      }
 
 
     render() {
@@ -268,7 +323,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                         <Col className='control-col' md={3}>
                             <div className='control-box'>
                                 <h2 className='heading control'>CONTROLS</h2>
-                                <h4 className='success-fail-message'>{this.state.successFailMessage}</h4>
+                                <h4 id='success-fail-message' className='success-fail-message'>{this.state.successFailMessage}</h4>
                                 <SignUp 
                                     isHidden={!isLoggedIn && this.state.showSignUp}
                                     signInLink={this.showSignInOnClick}

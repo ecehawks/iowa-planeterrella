@@ -7,14 +7,15 @@ import LandingPage from './LandingPage';
 import Footer from './Footer';
 import InfoPage from './InfoPage';
 
-import { aurora, history, stellar, varb } from '../info'
+import { aurora, history, stellar, varb } from '../info';
 
-import { Route } from "react-router-dom";
+import { Alert } from 'reactstrap';
+
+import { Route, RouteProps } from 'react-router-dom';
 
 type AppState = {
-  response: string,
-  post: string,
-  responseToPost: string,
+  timerAlert: string,
+  visible: boolean,
 };
 
 type AppProps = {};
@@ -33,51 +34,27 @@ let db = firebaseApp.database();
 
 export default class App extends React.Component<AppProps, AppState> {
   public interval = null as any;
-
+  private child: React.LegacyRef<Route<RouteProps>>;
   constructor(props: AppProps) {
     super(props);
     this.state = {
-      response: '',
-      post: '',
-      responseToPost: '',
+      timerAlert: 'Welcome',
+      visible: false,
     };
     this.startTimer = this.startTimer.bind(this);
+    this.closeAlert = this.closeAlert.bind(this);
+    this.child = React.createRef();
   };
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
-  }
+  componentDidMount() { }
 
   componentWillUnmount() {
     this.clearTimer();
   }
 
-  callApi = async () => {
-    const response = await fetch('/api/hello');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
-
-  handleSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-    });
-    const body = await response.text();
-    this.setState({ responseToPost: body });
-  };
-
   startTimer(type: string, duration: number) {
     let email = localStorage.getItem('User');
     
-    localStorage.setItem('type', type);
     const timer = {
         isControl: (type == 'control'),
         done: false,
@@ -92,13 +69,14 @@ export default class App extends React.Component<AppProps, AppState> {
       
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        localStorage.setItem('minutes', minutes.toString());
-        localStorage.setItem('seconds', seconds.toString());
       
+        this.setState({visible: true});
         if (timer.isControl){
             document.getElementById('video-label').innerHTML = minutes + ' min ' + seconds + ' sec left';
+            this.setState({timerAlert: minutes + ' min ' + seconds + ' sec left'});
         }else {
             document.getElementById('video-label').innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
+            this.setState({timerAlert: 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn'});
         }
         
 
@@ -132,8 +110,8 @@ export default class App extends React.Component<AppProps, AppState> {
             } else {
                 timer.isControl = false;
                 timer.done = true;
-                this.setState({enableButtons: false});
-                this.signOutUser();
+                this.setState({enableButtons: false, visible: false});
+                this.child.current.signOutUser();
             }
         }
     }.bind(this), 1000);
@@ -143,18 +121,31 @@ export default class App extends React.Component<AppProps, AppState> {
     clearInterval(this.interval);
   }
 
+  closeAlert() {
+    this.setState({ visible: false });
+  }
+
   render() {
+    let { timerAlert, visible } = this.state;
 
     return (
-      <div className="App">
+      <div className='App'>
         <NavBar />
-        <div className="planeterrella-banner">
-          <div className="planeterrella-img"></div>
+        <div className='planeterrella-banner'>
+          <div className='planeterrella-img'></div>
         </div>
-
+        <Alert 
+          className='timer-alert' 
+          color='secondary' 
+          isOpen={visible} 
+          toggle={this.closeAlert}
+        >
+          {timerAlert}
+        </Alert>
         <Route
           exact={true}
           path='/'
+          ref={this.child}
           render={(props) => <LandingPage {...props} startTimer={this.startTimer} clearTimer={this.clearTimer} db={db}/>}
         />
         <Route

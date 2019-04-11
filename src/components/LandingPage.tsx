@@ -260,6 +260,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 <div className='queue-info'>
                                     <p id='video-label' className='video-label click-join-text'>{videoLabelText}</p>
                                 </div>
+                                <div className='queue-info'>
+                                    <p className='warning'>Do not refresh the page</p>
+                                </div>
                             </div>
                         </Col>
                         <Col className='control-col' md={3}>

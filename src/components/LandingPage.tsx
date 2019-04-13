@@ -63,9 +63,11 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     onVoltageChange = (event: any) => {
+        // Set the slider value on movement then update Firebase Voltage_Control
         this.setState({ voltageControl: event.target.value })
         this.db_ref.update({ Voltage_Control: event.target.value })
 
+        // Grab the actual voltage from the Pi and display
         let voltage_ref = this.props.db.ref('voltage/');
         voltage_ref.once('value')
             .then(function(snapshot: any) {
@@ -73,6 +75,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }.bind(this));
     }
 
+    // On slider change, update the display and Firebase
     onAirPressureChange = (event: any) => {
         this.setState({ airPressureValue: event.target.value })
         if (event.target.value == 0){
@@ -87,6 +90,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }
     }
 
+    // Change the mode on Firebase based on button press
     onModeSelection = (event: any) => {
         let value = event.target.value;
         if (value == 'Aurora' || value == 'Belt' || value == 'Ring') {
@@ -109,6 +113,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         const { emailState, confirmPasswordState } = validate;
 
         if (emailState && confirmPasswordState){
+            // Use Firebase Authentication to create a user
             firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
                 this.setState({
                     successFailMessage: 'Successfully Signed Up ' + email,
@@ -130,6 +135,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     signInUser(email: string, password: string) {
         if (email !== '' && password !== ''){
+            // Use Firebase Authentication to sign-in a user
             firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
                 localStorage.setItem('User', email);
                 localStorage.setItem('isLoggedIn', 'true');
@@ -147,10 +153,14 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 queue_ref.push(email);
                 size++;
 
+                // If the user is the first under NA, then 
+                // place them in control mode
                 if (size == 2){
                     this.setState({enableButtons: true});
                     this.startTimer('control', 10);
                 }else{
+                    // Else remove NA and the user from the size and estimate
+                    // their wait time to start the timer
                     size = size - 2;
                     this.startTimer('queue', size * 10) 
                 } 
@@ -191,34 +201,31 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
           
+            // Set the label based on the mode the user is in
             if (timer.isControl){
                 document.getElementById('video-label').innerHTML = minutes + ' min ' + seconds + ' sec left';
             }else {
                 document.getElementById('video-label').innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
             }
             
-    
+            // Grab the queue
             let queue_ref = this.props.db.ref('queue/');
             queue_ref.once('value')
                 .then(function(snapshot: any) {
                     localStorage.setItem('queue', JSON.stringify(snapshot.val()));
             });
-            
             let queue = JSON.parse(localStorage.getItem('queue'));
           
+            // If the estimated time is over or they are next
             if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
+                // Clear the estimation timer
                 clearInterval(this.interval);
                 this.interval = null;
                 if (!timer.isControl){
                     timer.isControl = true;
                     timer.done = true;
-                    let queue_ref = this.props.db.ref('queue/');
-                    queue_ref.once('value')
-                        .then(function(snapshot: any) {
-                            localStorage.setItem('queue', JSON.stringify(snapshot.val()));
-                    });
                     
-                    let queue = JSON.parse(localStorage.getItem('queue'));
+                    // If the user is next, set to control or place them on a wait
                     if (queue[Object.keys(queue)[1]] == email){
                         this.setState({enableButtons: true});
                         this.startTimer('control', 10);
@@ -226,6 +233,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                         document.getElementById('video-label').innerHTML = 'Please Wait ...';
                     }
                 } else {
+                    // if they finish control mode, then sign out the user
                     timer.isControl = false;
                     timer.done = true;
                     this.setState({enableButtons: false});
@@ -241,6 +249,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         let isError = false;
         let email = localStorage.getItem('User');
     
+        // Sign out the user from their session using Firebase authentication
         firebase.auth().signOut().then(function() {
             // Sign-out successful.
         }).catch(function(error) {
@@ -271,6 +280,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     localStorage.setItem('queue', JSON.stringify(snapshot.val()));
             });
             
+            // Find and delete the user from the queue
             let queue = JSON.parse(localStorage.getItem('queue'));
             let size = Object.keys(queue).length;
             let deleteKey = '';

@@ -15,6 +15,7 @@ type AppState = {};
 
 type AppProps = {};
 
+// Firebase Configuration
 const config = {
   apiKey: 'AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU',
   authDomain: 'ui-planeterrella.firebaseapp.com',

@@ -329,7 +329,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     </iframe>
                                 </div>
                                 <div className='queue-info'>
-                                    <p id='video-label' className='video-label click-join-text'>{videoLabelText}</p>
+                                    <p id='video-label' className='video-label'>{videoLabelText}</p>
                                 </div>
                                 <div className='queue-info'>
                                     <p className='warning'>Do not refresh the page</p>

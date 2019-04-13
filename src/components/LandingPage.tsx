@@ -312,7 +312,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         let videoLabelText = 'Sign In to Control the Planeterrella';
 
         return (
-            <div className='info-section'>
+            <div className='video-section'>
                 <Container className='video-section'>
                     <Row className='video-row'>
                         <Col className='control-col' md={9}>
@@ -390,7 +390,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             >
                                             </input>
                                         </form>
-                                        <div className='text-block-3'>{voltage} V</div>
+                                        <div className='slider-label'>{voltage} V</div>
                                     </div>
                                     <h4 className='control-selection-labels'>Air Pressure</h4>
                                     <div className='slider-container'>
@@ -406,7 +406,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             >
                                             </input>
                                         </form>
-                                        <div className='text-block-3'>{airPressure}</div>
+                                        <div className='slider-label'>{airPressure}</div>
                                     </div>
                                     <Button
                                         className='control-btn'

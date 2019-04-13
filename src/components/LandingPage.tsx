@@ -55,20 +55,11 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     componentDidMount() {
+        // Sign out user on refresh and tab close
         window.addEventListener('beforeunload', () => 
         {  
             this.signOutUser();
         });
-
-        if (localStorage.getItem('isLoggedIn') == 'true'){
-            const minutes = localStorage.getItem('minutes');
-            const seconds = localStorage.getItem('seconds');
-            const time = parseInt(minutes) + (parseInt(seconds) / 60);
-            this.setState({ enableButtons: true })
-            this.startTimer(localStorage.getItem('type'), time);
-        }else{
-            localStorage.setItem('type','none');
-        }
     }
 
     onVoltageChange = (event: any) => {

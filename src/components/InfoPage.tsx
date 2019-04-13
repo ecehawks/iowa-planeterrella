@@ -64,9 +64,9 @@ export default class InfoPage extends React.Component<InfoPageProps, InfoPageSta
                             <p className='paragraph'>{info}</p>
                         </Col>
                         <Col className='column-3' md={5}>
-                            <div className="div-block-4">
-                                <img id='image-1' src={imageOne} className="info-img-top"/>
-                                <img id='image-2' src={imageTwo} className="info-img-bottom"/>
+                            <div className='div-block-4'>
+                                <img id='image-1' src={imageOne} className='info-img-top'/>
+                                <img id='image-2' src={imageTwo} className='info-img-bottom'/>
                             </div>
                         </Col>
                     </Row>

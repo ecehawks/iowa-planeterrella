@@ -32,27 +32,27 @@ export default class NavBar extends React.Component<NavBarProps, NavBarState> {
     render () {
         return (
             <div>
-                <Navbar color="dark" dark expand="md">
+                <Navbar color='dark' dark expand='md'>
                     <NavbarBrand href='/' className=''>
                         <div className='brand'/>
                     </NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto" navbar>
+                        <Nav className='ml-auto' navbar>
                             <NavItem>
-                                <NavLink href="/">Home</NavLink>
+                                <NavLink href='/'>Home</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/aurora">Aurora</NavLink>
+                                <NavLink href='/aurora'>Aurora</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/van-allen-radiation-belts">Van Allen Radiation Belts</NavLink>
+                                <NavLink href='/van-allen-radiation-belts'>Van Allen Radiation Belts</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/stellar-ring-current">Stellar Ring Current</NavLink>
+                                <NavLink href='/stellar-ring-current'>Stellar Ring Current</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/history">History</NavLink>
+                                <NavLink href='/history'>History</NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>

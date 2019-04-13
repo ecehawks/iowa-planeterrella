@@ -38,7 +38,7 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
   };
 
   validateEmail(event: any) {
-    const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRex = /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const { validate } = this.state
     if (emailRex.test(event.target.value)) {
         validate.emailState = 'success'
@@ -84,12 +84,12 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
         <div id='sign-up' className={this.props.isHidden ? 'controls' : 'hide'}>
             <Form>
                 <FormGroup>
-                    <Label className='control-selection-labels' for="email">Email</Label>
+                    <Label className='control-selection-labels' for='email'>Email</Label>
                     <Input
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Enter Your Email ..."
+                        type='email'
+                        name='email'
+                        id='email'
+                        placeholder='Enter Your Email ...'
                         value={this.state.email}
                         valid={ this.state.validate.emailState === 'success' }
                         invalid={ this.state.validate.emailState === 'fail' }
@@ -100,12 +100,12 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label className='control-selection-labels' for="password">Password</Label>
+                    <Label className='control-selection-labels' for='password'>Password</Label>
                     <Input
-                    type="password"
-                    name="password"
+                    type='password'
+                    name='password'
                     id='password'
-                    placeholder="Enter Your Password ..."
+                    placeholder='Enter Your Password ...'
                     value={this.state.password}
                     onChange={ (e) => {
                                 this.handleChangePassword(e);
@@ -113,12 +113,12 @@ export default class SignUp extends React.Component<SignUpProps, SignUpState> {
                 />
                 </FormGroup>                    
                 <FormGroup>
-                    <Label className='control-selection-labels' for="confirm-password">Confirm Password</Label>
+                    <Label className='control-selection-labels' for='confirm-password'>Confirm Password</Label>
                     <Input 
-                        type="password"
-                        name="confirm-password"
-                        id="confirm-password"
-                        placeholder="Re-enter Your Password ..."
+                        type='password'
+                        name='confirm-password'
+                        id='confirm-password'
+                        placeholder='Re-enter Your Password ...'
                         value={this.state.confirmPassword}
                         valid={ this.state.validate.confirmPasswordState === 'success' }
                         invalid={ this.state.validate.confirmPasswordState === 'fail' }

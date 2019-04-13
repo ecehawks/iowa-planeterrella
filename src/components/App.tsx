@@ -1,69 +1,71 @@
 import * as React from 'react';
+import * as firebase from 'firebase/app';
+import 'firebase/database';
 
 import NavBar from './NavBar';
 import LandingPage from './LandingPage';
 import Footer from './Footer';
 import InfoPage from './InfoPage';
 
-import { aurora, history, stellar, varb } from '../info'
+import { aurora, history, stellar, varb } from '../info';
 
-import { Route } from "react-router-dom";
+import { Route } from 'react-router-dom';
 
-type AppState = {
-  response: string,
-  post: string,
-  responseToPost: string,
-};
+type AppState = {};
 
 type AppProps = {};
+
+// Firebase Configuration
+const config = {
+  apiKey: 'AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU',
+  authDomain: 'ui-planeterrella.firebaseapp.com',
+  databaseURL: 'https://ui-planeterrella.firebaseio.com',
+  projectId: 'ui-planeterrella',
+  storageBucket: '<BUCKET>.appspot.com',
+  messagingSenderId: '433273184604'
+};
+
+let firebaseApp = firebase.initializeApp(config);
+let db = firebaseApp.database();
 
 export default class App extends React.Component<AppProps, AppState> {
 
   constructor(props: AppProps) {
     super(props);
-    this.state = {
-      response: '',
-      post: '',
-      responseToPost: '',
-    };
+    this.state = {};
   };
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
+  componentDidMount() {}
+
+  componentWillUnmount() {
+    this.clearTimer();
   }
 
-  callApi = async () => {
-    const response = await fetch('/api/hello');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
-
-  handleSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-    });
-    const body = await response.text();
-    this.setState({ responseToPost: body });
-  };
+  clearTimer() {
+    for(let i=0; i<100; i++)
+    {
+        window.clearInterval(i);
+    }
+  }
 
   render() {
 
     return (
-      <div className="App">
+      <div className='App'>
         <NavBar />
-        <div className="planeterrella-banner">
-          <div className="planeterrella-img"></div>
+        <div className='planeterrella-banner'>
+          <div className='planeterrella-img'></div>
         </div>
-
-        <Route exact={true} path="/" component={LandingPage} />
+        <Route
+          exact={true}
+          path='/'
+          render={(props) => <LandingPage 
+            {...props}
+            clearTimer={this.clearTimer} 
+            db={db}
+          />}
+        />
+        
         <Route
           path='/aurora'
           render={(props) => <InfoPage {...props} infoProps={aurora} />}

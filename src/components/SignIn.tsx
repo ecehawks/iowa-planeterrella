@@ -46,24 +46,24 @@ export default class SignIn extends React.Component<SignInProps, SignInState> {
       <div id='sign-up' className={this.props.isHidden ? 'controls' : 'hide'}>
           <Form>
               <FormGroup>
-                  <Label className='control-selection-labels' for="signInEmail">Email</Label>
+                  <Label className='control-selection-labels' for='signInEmail'>Email</Label>
                   <Input
-                    type="email"
-                    name="email"
-                    id="signInEmail"
-                    placeholder="Enter Your Email ..."
+                    type='email'
+                    name='email'
+                    id='signInEmail'
+                    placeholder='Enter Your Email ...'
                     onChange={ (e) => {
                       this.handleChangeEmail(e);
                   } }
                   />
               </FormGroup>
               <FormGroup>
-                  <Label className='control-selection-labels' for="signInPassword">Password</Label>
+                  <Label className='control-selection-labels' for='signInPassword'>Password</Label>
                   <Input
-                    type="password"
-                    name="password"
+                    type='password'
+                    name='password'
                     id='signInPassword'
-                    placeholder="Enter Your Password ..."
+                    placeholder='Enter Your Password ...'
                     onChange={ (e) => {
                       this.handleChangePassword(e);
                   } }

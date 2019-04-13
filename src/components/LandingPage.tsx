@@ -11,6 +11,7 @@ require('firebase/auth')
 
 type LandingPageState = {
     voltage: number,
+    voltageControl: number,
     airPressure: string,
     airPressureValue: number,
     enableButtons: boolean,
@@ -22,31 +23,14 @@ type LandingPageState = {
     queue: any[],
 }
 
-type LandingPageProps = {};
-
-const config = {
-    apiKey: "AIzaSyAkHCx7BgKyYlZgToo2hZgM2g61RrKZYcU",
-    authDomain: "ui-planeterrella.firebaseapp.com",
-    databaseURL: "https://ui-planeterrella.firebaseio.com",
-    projectId: "ui-planeterrella",
-    storageBucket: "<BUCKET>.appspot.com",
-    messagingSenderId: "433273184604"
+type LandingPageProps = {
+    clearTimer: () => void;
+    db: any;
 };
 
-let firebaseApp = firebase.initializeApp(config);
-let db = firebaseApp.database();
-let led_On_ref = db.ref("led_On/");
-
-// console.log the value of the db
-led_On_ref.on("value", function (snapshot) {
-    console.log("Key: " + snapshot.key + ", Value: " + snapshot.val());
-});
-
-let db_ref = db.ref();
-db_ref.update({ led_On: false });
-
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
-    private interval = null as any;
+    private db_ref = this.props.db.ref();
+    public interval = null as any;
 
     constructor(props: LandingPageProps) {
         super(props);
@@ -54,12 +38,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             airPressure: 'Low',
             airPressureValue: 0,
             enableButtons: false,
-            mode: "aurora",
+            mode: 'aurora',
             showSignUp: true,
             showSignIn: false,
             showControls: false,
             successFailMessage: '',
             voltage: 0,
+            voltageControl: 0,
             queue: [],
         };
         this.signInUser = this.signInUser.bind(this);
@@ -67,47 +52,52 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.showSignUpOnClick = this.showSignUpOnClick.bind(this);
         this.signUpUser = this.signUpUser.bind(this);
         this.signOutUser = this.signOutUser.bind(this);
-        this.startTimer = this.startTimer.bind(this);
     }
 
     componentDidMount() {
-        if (localStorage.getItem('isLoggedIn') == 'true') {
-            const minutes = localStorage.getItem('minutes');
-            const seconds = localStorage.getItem('seconds');
-            const time = parseInt(minutes) + (parseInt(seconds) / 60);
-            this.setState({ enableButtons: true })
-            this.startTimer(localStorage.getItem('type'), time);
-        } else {
-            localStorage.setItem('type', 'none');
-        }
+        // Sign out user on refresh and tab close
+        window.addEventListener('beforeunload', () => 
+        {  
+            this.signOutUser();
+        });
     }
 
     onVoltageChange = (event: any) => {
-        this.setState({ voltage: event.target.value })
-        db_ref.update({ voltage: event.target.value })
+        // Set the slider value on movement then update Firebase Voltage_Control
+        this.setState({ voltageControl: event.target.value })
+        this.db_ref.update({ Voltage_Control: event.target.value })
+
+        // Grab the actual voltage from the Pi and display
+        let voltage_ref = this.props.db.ref('voltage/');
+        voltage_ref.once('value')
+            .then(function(snapshot: any) {
+                this.setState({ voltage: snapshot.val() })
+        }.bind(this));
     }
 
+    // On slider change, update the display and Firebase
     onAirPressureChange = (event: any) => {
         this.setState({ airPressureValue: event.target.value })
         if (event.target.value == 0) {
             this.setState({ airPressure: 'Low' })
-            db_ref.update({ air_pressure: 'Low' })
-        } else if (event.target.value == 1) {
+            this.db_ref.update({ air_pressure: 'Low' })
+        } else if (event.target.value == 1){
             this.setState({ airPressure: 'Medium' })
-            db_ref.update({ air_pressure: 'Medium' })
-        } else if (event.target.value == 2) {
+            this.db_ref.update({ air_pressure: 'Medium' })
+        } else if (event.target.value == 2){
             this.setState({ airPressure: 'High' })
-            db_ref.update({ air_pressure: 'High' })
+            this.db_ref.update({ air_pressure: 'High' })
         }
     }
 
+    // Change the mode on Firebase based on button press
     onModeSelection = (event: any) => {
         let value = event.target.value;
         if (value == 'Aurora' || value == 'Belt' || value == 'Ring') {
             this.setState({
                 mode: value
             })
-            db_ref.update({ mode: value })
+            this.db_ref.update({ mode: value })
         }
     }
 
@@ -122,8 +112,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     signUpUser(validate: any, email: string, password: string) {
         const { emailState, confirmPasswordState } = validate;
 
-        if (emailState && confirmPasswordState) {
-            firebase.auth().createUserWithEmailAndPassword(email, password).then(function () {
+        if (emailState && confirmPasswordState){
+            // Use Firebase Authentication to create a user
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
                 this.setState({
                     successFailMessage: 'Successfully Signed Up ' + email,
                     showSignUp: false,
@@ -144,15 +135,16 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     signInUser(email: string, password: string) {
-        if (email !== '' && password !== '') {
-            firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
+        if (email !== '' && password !== ''){
+            // Use Firebase Authentication to sign-in a user
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
                 localStorage.setItem('User', email);
                 localStorage.setItem('isLoggedIn', 'true');
+                
+                let queue_ref = this.props.db.ref('queue/');
 
-                let queue_ref = db.ref("queue/");
-
-                queue_ref.once("value")
-                    .then(function (snapshot) {
+                queue_ref.once('value')
+                    .then(function(snapshot: any) {
                         localStorage.setItem('queue', JSON.stringify(snapshot.val()));
                     });
 
@@ -162,10 +154,14 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 queue_ref.push(email);
                 size++;
 
-                if (size == 2) {
-                    this.setState({ enableButtons: true });
+                // If the user is the first under NA, then 
+                // place them in control mode
+                if (size == 2){
+                    this.setState({enableButtons: true});
                     this.startTimer('control', 10);
-                } else {
+                }else{
+                    // Else remove NA and the user from the size and estimate
+                    // their wait time to start the timer
                     size = size - 2;
                     this.startTimer('queue', size * 10)
                 }
@@ -189,132 +185,126 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }
     }
 
-    signOutUser() {
-        clearInterval(this.interval);
+    startTimer(type: string, duration: number) {
+        let email = localStorage.getItem('User');
+        const timer = {
+            isControl: (type == 'control'),
+            done: false,
+        }
+    
+        let expirationDate = new Date();
+        expirationDate.setMinutes( expirationDate.getMinutes() + duration );
+    
+        this.interval = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = expirationDate.getTime() - now;
 
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+            // Set the label based on the mode the user is in
+            if (timer.isControl){
+                document.getElementById('video-label').innerHTML = minutes + ' min ' + seconds + ' sec left';
+            }else {
+                document.getElementById('video-label').innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
+            }
+            
+            // Grab the queue
+            let queue_ref = this.props.db.ref('queue/');
+            queue_ref.once('value')
+                .then(function(snapshot: any) {
+                    localStorage.setItem('queue', JSON.stringify(snapshot.val()));
+            });
+            let queue = JSON.parse(localStorage.getItem('queue'));
+          
+            // If the estimated time is over or they are next
+            if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
+                // Clear the estimation timer
+                clearInterval(this.interval);
+                this.interval = null;
+                if (!timer.isControl) {
+                    timer.isControl = true;
+                    timer.done = true;
+                    
+                    // If the user is next, set to control or place them on a wait
+                    if (queue[Object.keys(queue)[1]] == email){
+                        this.setState({enableButtons: true});
+                        this.startTimer('control', 10);
+                    }else{
+                        document.getElementById('video-label').innerHTML = 'Please Wait ...';
+                    }
+                } else {
+                    // if they finish control mode, then sign out the user
+                    timer.isControl = false;
+                    timer.done = true;
+                    this.setState({enableButtons: false});
+                    this.child.current.signOutUser();
+                }
+            }
+        }.bind(this), 1000);
+      }
+    
+      signOutUser() {
+        this.props.clearTimer();
+    
         let isError = false;
         let email = localStorage.getItem('User');
-        localStorage.setItem('type', 'none');
-        this.setState({ enableButtons: false });
-
-        firebase.auth().signOut().then(function () {
+    
+        // Sign out the user from their session using Firebase authentication
+        firebase.auth().signOut().then(function() {
             // Sign-out successful.
-        }).catch(function (error) {
+        }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log('Error Code ' + errorCode + ': ' + errorMessage);
             isError = true;
         });
-
-        if (!isError) {
+    
+        if (!isError){
             localStorage.setItem('isLoggedIn', 'false');
-
-            document.getElementById("video-label").innerHTML = 'Sign In to Control the Planeterrella';
+    
+            document.getElementById('video-label').innerHTML = 'Sign In to Control the Planeterrella';
+            document.getElementById('success-fail-message').innerHTML = 'Successfully Signed Out ' + email;
+    
             this.setState({
-                successFailMessage: 'Successfully Signed Out ' + email,
+                enableButtons: false,
                 showControls: false,
                 showSignIn: true,
                 showSignUp: false,
             });
-
-
-            let queue_ref = db.ref("queue/");
-            queue_ref.once("value")
-                .then(function (snapshot) {
+    
+            
+            let queue_ref = this.props.db.ref('queue/');
+            queue_ref.once('value')
+                .then(function(snapshot: any) {
                     localStorage.setItem('queue', JSON.stringify(snapshot.val()));
-                });
-
+            });
+            
+            // Find and delete the user from the queue
             let queue = JSON.parse(localStorage.getItem('queue'));
             let size = Object.keys(queue).length;
             let deleteKey = '';
-
-            if (size > 1) {
-                for (var key in queue) {
-                    if (queue[key] == email) {
+    
+            if (size > 1){
+                for(var key in queue){
+                    if ( queue[key] == email) {
                         deleteKey = key;
                     }
                 }
                 delete queue[deleteKey]
-            } else {
-                queue = ['NA']
             }
-
+            
+            let db_ref = this.props.db.ref();
             db_ref.update({ queue });
-
-            localStorage.setItem('User', '');
-        } else {
-            this.setState({ successFailMessage: 'Error Signing Out - Try Again Later' });
+        }else{
+          document.getElementById('success-fail-message').innerHTML = 'Error Signing Out - Try Again Later';
         }
-    }
+      }
 
-    startTimer(type: string, time: number) {
-        let email = localStorage.getItem('User');
-
-        localStorage.setItem('type', type);
-        const timer = {
-            isControl: (type == 'control'),
-            done: false,
-        }
-
-        let expirationDate = new Date();
-        expirationDate.setMinutes(expirationDate.getMinutes() + time);
-
-        this.interval = setInterval(function () {
-            var now = new Date().getTime();
-            var distance = expirationDate.getTime() - now;
-
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            localStorage.setItem('minutes', minutes.toString());
-            localStorage.setItem('seconds', seconds.toString());
-
-            if (timer.isControl) {
-                document.getElementById("video-label").innerHTML = minutes + ' min ' + seconds + ' sec left';
-            } else {
-                document.getElementById("video-label").innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
-            }
-
-
-            let queue_ref = db.ref("queue/");
-            queue_ref.once("value")
-                .then(function (snapshot) {
-                    localStorage.setItem('queue', JSON.stringify(snapshot.val()));
-                });
-
-            let queue = JSON.parse(localStorage.getItem('queue'));
-
-            if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
-                clearInterval(this.interval);
-                this.interval = null;
-                if (!timer.isControl) {
-                    timer.isControl = true;
-                    timer.done = true;
-                    let queue_ref = db.ref("queue/");
-                    queue_ref.once("value")
-                        .then(function (snapshot) {
-                            localStorage.setItem('queue', JSON.stringify(snapshot.val()));
-                        });
-
-                    let queue = JSON.parse(localStorage.getItem('queue'));
-                    if (queue[Object.keys(queue)[1]] == email) {
-                        this.setState({ enableButtons: true });
-                        this.startTimer('control', 10);
-                    } else {
-                        document.getElementById("video-label").innerHTML = 'Please Wait ...';
-                    }
-                } else {
-                    timer.isControl = false;
-                    timer.done = true;
-                    this.setState({ enableButtons: false });
-                    this.signOutUser();
-                }
-            }
-        }.bind(this), 1000);
-    }
 
     render() {
-        let { airPressure, airPressureValue, voltage, enableButtons } = this.state;
+        let { airPressure, airPressureValue, voltageControl, voltage, enableButtons } = this.state;
         let isLoggedIn = false;
         if (localStorage.getItem('isLoggedIn') == 'true') {
             isLoggedIn = true;
@@ -341,13 +331,16 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 <div className='queue-info'>
                                     <p id='video-label' className='video-label click-join-text'>{videoLabelText}</p>
                                 </div>
+                                <div className='queue-info'>
+                                    <p className='warning'>Do not refresh the page</p>
+                                </div>
                             </div>
                         </Col>
                         <Col className='control-col' md={3}>
                             <div className='control-box'>
                                 <h2 className='heading control'>CONTROLS</h2>
-                                <h4 className='success-fail-message'>{this.state.successFailMessage}</h4>
-                                <SignUp
+                                <h4 id='success-fail-message' className='success-fail-message'>{this.state.successFailMessage}</h4>
+                                <SignUp 
                                     isHidden={!isLoggedIn && this.state.showSignUp}
                                     signInLink={this.showSignInOnClick}
                                     signUpUser={this.signUpUser} />
@@ -372,7 +365,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             value='Belt'
                                             onClick={this.onModeSelection}
                                             disabled={!enableButtons}
-                                        >Aurora Lobe
+                                        >Van Allen Belt
                                         </Button>
                                         <Button
                                             id='stellar-ring-current-btn'
@@ -385,13 +378,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     </div>
                                     <h4 className='control-selection-labels'>Voltage</h4>
                                     <div className='slider-container'>
-                                        <form className="slider-box">
+                                        <form className='slider-box'>
                                             <input
-                                                type="range"
-                                                min="0"
-                                                max="800"
-                                                value={voltage}
-                                                className="slider"
+                                                type='range'
+                                                min='0'
+                                                max='100'
+                                                value={voltageControl}
+                                                className='slider'
                                                 onChange={this.onVoltageChange}
                                                 disabled={!enableButtons}
                                             >
@@ -401,19 +394,19 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     </div>
                                     <h4 className='control-selection-labels'>Air Pressure</h4>
                                     <div className='slider-container'>
-                                        <form className="slider-box">
+                                        <form className='slider-box'>
                                             <input
-                                                type="range"
-                                                min="0"
-                                                max="2"
+                                                type='range'
+                                                min='0'
+                                                max='2'
                                                 value={airPressureValue}
-                                                className="slider"
+                                                className='slider'
                                                 onChange={this.onAirPressureChange}
                                                 disabled={!enableButtons}
                                             >
                                             </input>
                                         </form>
-                                        <div className='text-block-3'>{airPressure} Pa</div>
+                                        <div className='text-block-3'>{airPressure}</div>
                                     </div>
                                     <Button
                                         className='control-btn'

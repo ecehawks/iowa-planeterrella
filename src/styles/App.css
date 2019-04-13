@@ -473,11 +473,6 @@
   text-align: left;
 }
 
-/* General */
-.container {
-  height: 100%;
-}
-
 /* Breakpoint Styles */
 
 @media (max-width: 991px) {

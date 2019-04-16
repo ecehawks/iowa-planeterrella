@@ -322,7 +322,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     className="video w-video w-embed">
                                     <iframe
                                         className="embedly-embed"
-                                        src="https://www.youtube.com/embed/wwNouiC1YGQ?autoplay=1"
+                                        src="https://www.youtube.com/embed/F8c6L9z4-Vg?autoplay=1"
                                         scrolling="no"
                                         allow="autoplay; fullscreen"
                                     >

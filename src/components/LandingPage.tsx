@@ -78,7 +78,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     // On slider change, update the display and Firebase
     onAirPressureChange = (event: any) => {
         this.setState({ airPressureValue: event.target.value })
-        if (event.target.value == 0){
+        if (event.target.value == 0) {
             this.setState({ airPressure: 'Low' })
             this.db_ref.update({ air_pressure: 'Low' })
         } else if (event.target.value == 1){
@@ -102,11 +102,11 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     showSignInOnClick() {
-        this.setState({showSignUp: false, showSignIn: true})
+        this.setState({ showSignUp: false, showSignIn: true })
     }
 
     showSignUpOnClick() {
-        this.setState({ showSignIn: false, showSignUp: true})
+        this.setState({ showSignIn: false, showSignUp: true })
     }
 
     signUpUser(validate: any, email: string, password: string) {
@@ -117,18 +117,19 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
                 this.setState({
                     successFailMessage: 'Successfully Signed Up ' + email,
-                    showSignUp: false, 
-                    showSignIn: true});
-            }.bind(this)).catch(function(error: any) {
+                    showSignUp: false,
+                    showSignIn: true
+                });
+            }.bind(this)).catch(function (error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 console.log('Error Code ' + errorCode + ': ' + errorMessage);
-                this.setState({successFailMessage: errorMessage});
+                this.setState({ successFailMessage: errorMessage });
             }.bind(this));
         }
-        else{
-            this.setState({successFailMessage: 'Incorrect email/password'});
+        else {
+            this.setState({ successFailMessage: 'Incorrect email/password' });
         }
 
     }
@@ -145,8 +146,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 queue_ref.once('value')
                     .then(function(snapshot: any) {
                         localStorage.setItem('queue', JSON.stringify(snapshot.val()));
-                });
-                
+                    });
+
                 let queue = JSON.parse(localStorage.getItem('queue'));
                 let size = Object.keys(queue).length;
 
@@ -162,25 +163,25 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     // Else remove NA and the user from the size and estimate
                     // their wait time to start the timer
                     size = size - 2;
-                    this.startTimer('queue', size * 10) 
-                } 
+                    this.startTimer('queue', size * 10)
+                }
 
                 this.setState({
                     successFailMessage: 'Successfully Signed In ' + email,
-                    showControls: true, 
-                    showSignIn: false, 
+                    showControls: true,
+                    showSignIn: false,
                     showSignUp: false
                 });
-            }.bind(this)).catch(function(error: any) {
+            }.bind(this)).catch(function (error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 console.log('Error Code ' + errorCode + ': ' + errorMessage);
-                this.setState({successFailMessage: errorMessage});
+                this.setState({ successFailMessage: errorMessage });
             }.bind(this));
         }
-        else{
-            this.setState({successFailMessage: 'Input email/password'});
+        else {
+            this.setState({ successFailMessage: 'Input email/password' });
         }
     }
 
@@ -197,7 +198,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.interval = setInterval(function() {
             var now = new Date().getTime();
             var distance = expirationDate.getTime() - now;
-          
+
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
           
@@ -221,7 +222,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 // Clear the estimation timer
                 clearInterval(this.interval);
                 this.interval = null;
-                if (!timer.isControl){
+                if (!timer.isControl) {
                     timer.isControl = true;
                     timer.done = true;
                     
@@ -305,21 +306,30 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     render() {
         let { airPressure, airPressureValue, voltageControl, voltage, enableButtons } = this.state;
         let isLoggedIn = false;
-        if (localStorage.getItem('isLoggedIn') == 'true'){
+        if (localStorage.getItem('isLoggedIn') == 'true') {
             isLoggedIn = true;
         }
         let videoLabelText = 'Sign In to Control the Planeterrella';
-        
+
         return (
-            <div className='info-section'>
+            <div className='video-section'>
                 <Container className='video-section'>
                     <Row className='video-row'>
-                        <Col className='video-col' md={9}>
+                        <Col className='control-col' md={9}>
                             <div className='control-box'>
-                                <div className='video'>
+                                <div
+                                    id="w-node-ab1b4addd327-3fb3fd5a"
+                                    className="video w-video w-embed">
+                                    <iframe
+                                        className="embedly-embed"
+                                        src="https://www.youtube.com/embed/F8c6L9z4-Vg?autoplay=1"
+                                        scrolling="no"
+                                        allow="autoplay; fullscreen"
+                                    >
+                                    </iframe>
                                 </div>
                                 <div className='queue-info'>
-                                    <p id='video-label' className='video-label click-join-text'>{videoLabelText}</p>
+                                    <p id='video-label' className='video-label'>{videoLabelText}</p>
                                 </div>
                                 <div className='queue-info'>
                                     <p className='warning'>Do not refresh the page</p>
@@ -333,15 +343,15 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 <SignUp 
                                     isHidden={!isLoggedIn && this.state.showSignUp}
                                     signInLink={this.showSignInOnClick}
-                                    signUpUser={this.signUpUser}/>
-                                <SignIn 
+                                    signUpUser={this.signUpUser} />
+                                <SignIn
                                     isHidden={!isLoggedIn && this.state.showSignIn}
                                     signUpLink={this.showSignUpOnClick}
-                                    showControls={this.signInUser}/>
+                                    showControls={this.signInUser} />
                                 <div id='controls' className={(this.state.showControls || isLoggedIn) ? 'controls' : 'hide'}>
                                     <h4 className='control-selection-labels'>Select Mode</h4>
                                     <div className='mode-select'>
-                                        <Button 
+                                        <Button
                                             id='aurora-btn'
                                             className='button top'
                                             value='Aurora'
@@ -380,7 +390,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             >
                                             </input>
                                         </form>
-                                        <div className='text-block-3'>{voltage} V</div>
+                                        <div className='slider-label'>{voltage} V</div>
                                     </div>
                                     <h4 className='control-selection-labels'>Air Pressure</h4>
                                     <div className='slider-container'>
@@ -396,13 +406,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             >
                                             </input>
                                         </form>
-                                        <div className='text-block-3'>{airPressure}</div>
+                                        <div className='slider-label'>{airPressure}</div>
                                     </div>
                                     <Button
                                         className='control-btn'
                                         onClick={() => this.signOutUser()}
                                     >
-                                    Sign Out
+                                        Sign Out
                                     </Button>
                                 </div>
                             </div>

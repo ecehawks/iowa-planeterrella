@@ -12,6 +12,8 @@ require('firebase/auth')
 type LandingPageState = {
     voltage: number,
     voltageControl: number,
+    current: number,
+    currentControl: number,
     airPressure: string,
     airPressureValue: number,
     enableButtons: boolean,
@@ -37,6 +39,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.state = {
             airPressure: 'Low',
             airPressureValue: 0,
+            current: 0,
+            currentControl: 0,
             enableButtons: false,
             mode: 'aurora',
             showSignUp: true,
@@ -72,6 +76,19 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         voltage_ref.once('value')
             .then(function(snapshot: any) {
                 this.setState({ voltage: snapshot.val() })
+        }.bind(this));
+    }
+
+    onCurrentChange = (event: any) => {
+        // Set the slider value on movement then update Firebase Voltage_Control
+        this.setState({ currentControl: event.target.value })
+        this.db_ref.update({ current_Control: event.target.value })
+
+        // Grab the actual voltage from the Pi and display
+        let voltage_ref = this.props.db.ref('current/');
+        voltage_ref.once('value')
+            .then(function(snapshot: any) {
+                this.setState({ current: snapshot.val() })
         }.bind(this));
     }
 
@@ -304,7 +321,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
 
     render() {
-        let { airPressure, airPressureValue, voltageControl, voltage, enableButtons } = this.state;
+        let { airPressure, airPressureValue, currentControl, voltageControl, voltage, enableButtons } = this.state;
         let isLoggedIn = false;
         if (localStorage.getItem('isLoggedIn') == 'true') {
             isLoggedIn = true;
@@ -382,7 +399,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             <input
                                                 type='range'
                                                 min='0'
-                                                max='100'
+                                                max='70'
                                                 value={voltageControl}
                                                 className='slider'
                                                 onChange={this.onVoltageChange}
@@ -402,6 +419,22 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                                 value={airPressureValue}
                                                 className='slider'
                                                 onChange={this.onAirPressureChange}
+                                                disabled={!enableButtons}
+                                            >
+                                            </input>
+                                        </form>
+                                        <div className='slider-label'>{airPressure}</div>
+                                    </div>
+                                    <h4 className='control-selection-labels'>Current</h4>
+                                    <div className='slider-container'>
+                                        <form className='slider-box'>
+                                            <input
+                                                type='range'
+                                                min='0'
+                                                max='15'
+                                                value={currentControl}
+                                                className='slider'
+                                                onChange={this.onCurrentChange}
                                                 disabled={!enableButtons}
                                             >
                                             </input>

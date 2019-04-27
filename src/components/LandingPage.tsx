@@ -16,6 +16,8 @@ type LandingPageState = {
     currentControl: number,
     airPressure: string,
     airPressureValue: number,
+    hvOnOff: string,
+    hvValue: number,
     enableButtons: boolean,
     showSignUp: boolean,
     showSignIn: boolean,
@@ -42,6 +44,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             current: 0,
             currentControl: 0,
             enableButtons: false,
+            hvOnOff: 'On',
+            hvValue: 1,
             mode: 'aurora',
             showSignUp: true,
             showSignIn: false,
@@ -90,6 +94,17 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             .then(function(snapshot: any) {
                 this.setState({ current: snapshot.val() })
         }.bind(this));
+    }
+
+    // On slider change, update the display and Firebase
+    onHVChange = (event: any) => {
+        this.setState({ hvValue: event.target.value })
+        this.db_ref.update({ inhibit: event.target.value })
+        if (event.target.value == 0) {
+            this.setState({ hvOnOff: 'Off' })
+        } else if (event.target.value == 1){
+            this.setState({ hvOnOff: 'On' })
+        } 
     }
 
     // On slider change, update the display and Firebase
@@ -321,7 +336,12 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
 
     render() {
-        let { airPressure, airPressureValue, currentControl, voltageControl, voltage, enableButtons } = this.state;
+        let { 
+            airPressure, airPressureValue, 
+            current, currentControl, 
+            hvOnOff, hvValue,
+            voltageControl, voltage, 
+            enableButtons } = this.state;
         let isLoggedIn = false;
         if (localStorage.getItem('isLoggedIn') == 'true') {
             isLoggedIn = true;
@@ -366,6 +386,22 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     signUpLink={this.showSignUpOnClick}
                                     showControls={this.signInUser} />
                                 <div id='controls' className={(this.state.showControls || isLoggedIn) ? 'controls' : 'hide'}>
+                                <h4 className='control-selection-labels'>High Voltage Power</h4>
+                                    <div className='slider-container'>
+                                        <form className='slider-box power'>
+                                            <input
+                                                type='range'
+                                                min='0'
+                                                max='1'
+                                                value={hvValue}
+                                                className='slider'
+                                                onChange={this.onHVChange}
+                                                disabled={!enableButtons}
+                                            >
+                                            </input>
+                                        </form>
+                                        <div className='slider-label'>{hvOnOff}</div>
+                                    </div>
                                     <h4 className='control-selection-labels'>Select Mode</h4>
                                     <div className='mode-select'>
                                         <Button
@@ -439,7 +475,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             >
                                             </input>
                                         </form>
-                                        <div className='slider-label'>{airPressure}</div>
+                                        <div className='slider-label'>{current}</div>
                                     </div>
                                     <Button
                                         className='control-btn'

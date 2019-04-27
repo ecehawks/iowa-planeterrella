@@ -229,6 +229,10 @@
   align-items: center;
 }
 
+.power {
+  width: 20%;
+}
+
 .slider-label {
   display: inline-block;
 }

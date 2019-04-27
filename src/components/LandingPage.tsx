@@ -238,13 +238,13 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     timer.isControl = false;
                     timer.done = true;
                     this.setState({enableButtons: false});
-                    this.child.current.signOutUser();
+                    this.signOutUser();
                 }
             }
         }.bind(this), 1000);
-      }
-    
-      signOutUser() {
+    }
+
+    signOutUser() {
         this.props.clearTimer();
     
         let isError = false;

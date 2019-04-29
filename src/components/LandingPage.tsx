@@ -120,9 +120,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             this.setState({ airPressure: 'Low' })
             this.db_ref.update({ air_pressure: 'Low' })
         } else if (event.target.value == 1){
-            this.setState({ airPressure: 'Medium' })
-            this.db_ref.update({ air_pressure: 'Medium' })
-        } else if (event.target.value == 2){
             this.setState({ airPressure: 'High' })
             this.db_ref.update({ air_pressure: 'High' })
         }
@@ -156,9 +153,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         user.sendEmailVerification().then(function() {
             console.log("Success")
             this.signInHelper(user.email);
-        }.bind(this)).catch(function(error) {
-            console.log('Error sending verification email. Error: ' + error)
-        });
+        }.bind(this)).catch(function() {
+            this.setState({ successFailMessage: 'Error sending verification email.' });
+        }.bind(this));
     }
 
     checkVerification() {
@@ -166,7 +163,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         if (user.emailVerified){
             this.signInHelper(user.email);
         }else{
-            console.log('Please verify your email.');
+            this.setState({ successFailMessage: 'Please verify your email.' });
         }
     }
 
@@ -512,7 +509,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             <input
                                                 type='range'
                                                 min='0'
-                                                max='2'
+                                                max='1'
                                                 value={airPressureValue}
                                                 className='slider'
                                                 onChange={this.onAirPressureChange}

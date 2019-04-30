@@ -6,6 +6,7 @@ import { Container, Row, Col, Button } from 'reactstrap';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import Verify from './Verify';
 
 require('firebase/auth')
 
@@ -22,6 +23,7 @@ type LandingPageState = {
     showSignUp: boolean,
     showSignIn: boolean,
     showControls: boolean,
+    showVerify: boolean,
     successFailMessage: string,
     mode: string,
     queue: any[],
@@ -50,6 +52,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             showSignUp: true,
             showSignIn: false,
             showControls: false,
+            showVerify: false,
             successFailMessage: '',
             voltage: 0,
             voltageControl: 0,
@@ -58,6 +61,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.signInUser = this.signInUser.bind(this);
         this.showSignInOnClick = this.showSignInOnClick.bind(this);
         this.showSignUpOnClick = this.showSignUpOnClick.bind(this);
+        this.showVerifyOnClick = this.showVerifyOnClick.bind(this);
+        this.resendVerifyOnClick = this.resendVerifyOnClick.bind(this);
+        this.checkVerification = this.checkVerification.bind(this);
         this.signUpUser = this.signUpUser.bind(this);
         this.signOutUser = this.signOutUser.bind(this);
     }
@@ -114,9 +120,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             this.setState({ airPressure: 'Low' })
             this.db_ref.update({ air_pressure: 'Low' })
         } else if (event.target.value == 1){
-            this.setState({ airPressure: 'Medium' })
-            this.db_ref.update({ air_pressure: 'Medium' })
-        } else if (event.target.value == 2){
             this.setState({ airPressure: 'High' })
             this.db_ref.update({ air_pressure: 'High' })
         }
@@ -134,11 +137,34 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     showSignInOnClick() {
-        this.setState({ showSignUp: false, showSignIn: true })
+        this.setState({ showSignUp: false, showVerify: false, showSignIn: true })
     }
 
     showSignUpOnClick() {
-        this.setState({ showSignIn: false, showSignUp: true })
+        this.setState({ showSignIn: false, showVerify: false, showSignUp: true })
+    }
+
+    showVerifyOnClick() {
+        this.setState({ showSignIn: false, showVerify: true, showSignUp: false })
+    }
+
+    resendVerifyOnClick() {
+        var user = firebase.auth().currentUser;
+        user.sendEmailVerification().then(function() {
+            console.log("Success")
+            this.signInHelper(user.email);
+        }.bind(this)).catch(function() {
+            this.setState({ successFailMessage: 'Error sending verification email.' });
+        }.bind(this));
+    }
+
+    checkVerification() {
+        var user = firebase.auth().currentUser;
+        if (user.emailVerified){
+            this.signInHelper(user.email);
+        }else{
+            this.setState({ successFailMessage: 'Please verify your email.' });
+        }
     }
 
     signUpUser(validate: any, email: string, password: string) {
@@ -147,11 +173,29 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         if (emailState && confirmPasswordState){
             // Use Firebase Authentication to create a user
             firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
-                this.setState({
-                    successFailMessage: 'Successfully Signed Up ' + email,
-                    showSignUp: false,
-                    showSignIn: true
-                });
+                var user = firebase.auth().currentUser;
+                if (user.emailVerified){
+                    localStorage.setItem('User', email);
+                    localStorage.setItem('isLoggedIn', 'true');
+
+                    this.setState({
+                        successFailMessage: 'Successfully Signed Up',
+                        showSignUp: false,
+                        showSignIn: true
+                    });
+                }else {
+                    user.sendEmailVerification().then(function() {
+                        // Email sent.
+                    }).catch(function(error) {
+                        console.log('Error sending verification email. Error: ' + error)
+                    });
+                    this.setState({
+                        successFailMessage: 'Check your email to verfiy account.',
+                        showSignUp: false,
+                        showVerify: true
+                    });
+                }
+               
             }.bind(this)).catch(function (error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
@@ -166,44 +210,55 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     }
 
+    signInHelper(email: string){
+        var user = firebase.auth().currentUser;
+        if (user.emailVerified){
+            localStorage.setItem('User', email);
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            let queue_ref = this.props.db.ref('queue/');
+
+            queue_ref.once('value')
+                .then(function(snapshot: any) {
+                    localStorage.setItem('queue', JSON.stringify(snapshot.val()));
+                });
+
+            let queue = JSON.parse(localStorage.getItem('queue'));
+            let size = Object.keys(queue).length;
+
+            queue_ref.push(email);
+            size++;
+
+            // If the user is the first under NA, then 
+            // place them in control mode
+            if (size == 2){
+                this.setState({enableButtons: true});
+                this.startTimer('control', 10);
+            }else{
+                // Else remove NA and the user from the size and estimate
+                // their wait time to start the timer
+                size = size - 2;
+                this.startTimer('queue', size * 10)
+            }
+
+            this.setState({
+                successFailMessage: 'Successfully Signed In',
+                showControls: true,
+                showSignIn: false,
+                showSignUp: false
+            });
+        }else{
+            this.showVerifyOnClick();
+            this.resendVerifyOnClick();
+        }
+    }
+
     signInUser(email: string, password: string) {
-        if (email !== '' && password !== ''){
+        if ((email !== '' && password !== '')){
             // Use Firebase Authentication to sign-in a user
             firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
-                localStorage.setItem('User', email);
-                localStorage.setItem('isLoggedIn', 'true');
+                this.signInHelper(email);
                 
-                let queue_ref = this.props.db.ref('queue/');
-
-                queue_ref.once('value')
-                    .then(function(snapshot: any) {
-                        localStorage.setItem('queue', JSON.stringify(snapshot.val()));
-                    });
-
-                let queue = JSON.parse(localStorage.getItem('queue'));
-                let size = Object.keys(queue).length;
-
-                queue_ref.push(email);
-                size++;
-
-                // If the user is the first under NA, then 
-                // place them in control mode
-                if (size == 2){
-                    this.setState({enableButtons: true});
-                    this.startTimer('control', 10);
-                }else{
-                    // Else remove NA and the user from the size and estimate
-                    // their wait time to start the timer
-                    size = size - 2;
-                    this.startTimer('queue', size * 10)
-                }
-
-                this.setState({
-                    successFailMessage: 'Successfully Signed In ' + email,
-                    showControls: true,
-                    showSignIn: false,
-                    showSignUp: false
-                });
             }.bind(this)).catch(function (error: any) {
                 // Handle Errors here.
                 var errorCode = error.code;
@@ -211,8 +266,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 console.log('Error Code ' + errorCode + ': ' + errorMessage);
                 this.setState({ successFailMessage: errorMessage });
             }.bind(this));
-        }
-        else {
+        }else {
             this.setState({ successFailMessage: 'Input email/password' });
         }
     }
@@ -297,7 +351,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             localStorage.setItem('isLoggedIn', 'false');
     
             document.getElementById('video-label').innerHTML = 'Sign In to Control the Planeterrella';
-            document.getElementById('success-fail-message').innerHTML = 'Successfully Signed Out ' + email;
+            document.getElementById('success-fail-message').innerHTML = 'Successfully Signed Out';
     
             this.setState({
                 enableButtons: false,
@@ -381,6 +435,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     isHidden={!isLoggedIn && this.state.showSignUp}
                                     signInLink={this.showSignInOnClick}
                                     signUpUser={this.signUpUser} />
+                                <Verify 
+                                    isHidden={!isLoggedIn && this.state.showVerify}
+                                    checkVerification={this.checkVerification} 
+                                    verifyEmail={this.resendVerifyOnClick}/>
                                 <SignIn
                                     isHidden={!isLoggedIn && this.state.showSignIn}
                                     signUpLink={this.showSignUpOnClick}
@@ -451,7 +509,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             <input
                                                 type='range'
                                                 min='0'
-                                                max='2'
+                                                max='1'
                                                 value={airPressureValue}
                                                 className='slider'
                                                 onChange={this.onAirPressureChange}

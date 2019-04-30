@@ -1,14 +1,13 @@
 import * as React from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
+import 'firebase/auth';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Verify from './Verify';
-
-require('firebase/auth')
 
 type LandingPageState = {
     voltage: number,

@@ -169,8 +169,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     signUpUser(validate: any, email: string, password: string) {
         const { emailState, confirmPasswordState } = validate;
-
-        if (emailState && confirmPasswordState){
+        if (localStorage.getItem('isLoggedIn') == 'true') {
+            this.setState({ successFailMessage: 'Already Signed In. Enjoy learning from the other tabs.' });
+        }else if (emailState && confirmPasswordState){
             // Use Firebase Authentication to create a user
             firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
                 var user = firebase.auth().currentUser;
@@ -254,7 +255,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     signInUser(email: string, password: string) {
-        if ((email !== '' && password !== '')){
+        if (localStorage.getItem('isLoggedIn') == 'true') {
+            this.setState({ successFailMessage: 'Already Signed In. Enjoy learning from the other tabs.' });
+        }else if ((email !== '' && password !== '')){
             // Use Firebase Authentication to sign-in a user
             firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
                 this.signInHelper(email);

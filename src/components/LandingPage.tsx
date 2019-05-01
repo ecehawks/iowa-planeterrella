@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
+import 'firebase/auth';
 
 import { Container, Row, Col, Button } from 'reactstrap';
 
@@ -8,30 +9,28 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Verify from './Verify';
 
-require('firebase/auth')
-
 type LandingPageState = {
-    voltage: number,
-    voltageControl: number,
-    current: number,
-    currentControl: number,
-    airPressure: string,
-    airPressureValue: number,
-    hvOnOff: string,
-    hvValue: number,
-    enableButtons: boolean,
-    showSignUp: boolean,
-    showSignIn: boolean,
-    showControls: boolean,
-    showVerify: boolean,
-    successFailMessage: string,
-    mode: string,
-    queue: any[],
+	voltage: number,
+	voltageControl: number,
+	current: number,
+	currentControl: number,
+	airPressure: string,
+	airPressureValue: number,
+	hvOnOff: string,
+	hvValue: number,
+	enableButtons: boolean,
+	showSignUp: boolean,
+	showSignIn: boolean,
+	showControls: boolean,
+	showVerify: boolean,
+	successFailMessage: string,
+	mode: string,
+	queue: any[],
 }
 
 type LandingPageProps = {
-    clearTimer: () => void;
-    db: any;
+	clearTimer: () => void;
+	db: any;
 };
 
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
@@ -409,12 +408,12 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     id="w-node-ab1b4addd327-3fb3fd5a"
                                     className="video w-video w-embed">
                                     <iframe
-                                        className="embedly-embed"
-                                        src="https://www.youtube.com/embed/5-gPoiKDkzc?autoplay=1"
-                                        scrolling="no"
-                                        allow="autoplay; fullscreen"
-                                    >
-                                    </iframe>
+										width="640"
+										height="360"
+										src="https://www.youtube.com/embed/live_stream?channel=UCz5EIMgaHer46dex0YKjB-Q"
+										allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+										>
+									</iframe>
                                 </div>
                                 <div className='queue-info'>
                                     <p id='video-label' className='video-label'>{videoLabelText}</p>
@@ -466,83 +465,83 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             disabled={!enableButtons}
                                         >Aurora
                                         </Button>
-                                        <Button
-                                            id='aurora-lobe-btn'
-                                            className='button'
-                                            value='Belt'
-                                            onClick={this.onModeSelection}
-                                            disabled={!enableButtons}
-                                        >Van Allen Belt
+										<Button
+											id='aurora-lobe-btn'
+											className='button'
+											value='Belt'
+											onClick={this.onModeSelection}
+											disabled={!enableButtons}
+										>Van Allen Belt
                                         </Button>
-                                        <Button
-                                            id='stellar-ring-current-btn'
-                                            className='button bottom'
-                                            value='Ring'
-                                            onClick={this.onModeSelection}
-                                            disabled={!enableButtons}
-                                        >Stellar Ring Current
+										<Button
+											id='stellar-ring-current-btn'
+											className='button bottom'
+											value='Ring'
+											onClick={this.onModeSelection}
+											disabled={!enableButtons}
+										>Stellar Ring Current
                                         </Button>
-                                    </div>
-                                    <h4 className='control-selection-labels'>Voltage</h4>
-                                    <div className='slider-container'>
-                                        <form className='slider-box'>
-                                            <input
-                                                type='range'
-                                                min='0'
-                                                max='70'
-                                                value={voltageControl}
-                                                className='slider'
-                                                onChange={this.onVoltageChange}
-                                                disabled={!enableButtons}
-                                            >
-                                            </input>
-                                        </form>
-                                        <div className='slider-label'>{voltage} V</div>
-                                    </div>
-                                    <h4 className='control-selection-labels'>Air Pressure</h4>
-                                    <div className='slider-container'>
-                                        <form className='slider-box'>
-                                            <input
-                                                type='range'
-                                                min='0'
-                                                max='1'
-                                                value={airPressureValue}
-                                                className='slider'
-                                                onChange={this.onAirPressureChange}
-                                                disabled={!enableButtons}
-                                            >
-                                            </input>
-                                        </form>
-                                        <div className='slider-label'>{airPressure}</div>
-                                    </div>
-                                    <h4 className='control-selection-labels'>Current</h4>
-                                    <div className='slider-container'>
-                                        <form className='slider-box'>
-                                            <input
-                                                type='range'
-                                                min='0'
-                                                max='15'
-                                                value={currentControl}
-                                                className='slider'
-                                                onChange={this.onCurrentChange}
-                                                disabled={!enableButtons}
-                                            >
-                                            </input>
-                                        </form>
-                                        <div className='slider-label'>{current}</div>
-                                    </div>
-                                    <Button
-                                        className='control-btn'
-                                        onClick={() => this.signOutUser()}
-                                    >
-                                        Sign Out
+									</div>
+									<h4 className='control-selection-labels'>Voltage</h4>
+									<div className='slider-container'>
+										<form className='slider-box'>
+											<input
+												type='range'
+												min='0'
+												max='70'
+												value={voltageControl}
+												className='slider'
+												onChange={this.onVoltageChange}
+												disabled={!enableButtons}
+											>
+											</input>
+										</form>
+										<div className='slider-label'>{voltage} V</div>
+									</div>
+									<h4 className='control-selection-labels'>Air Pressure</h4>
+									<div className='slider-container'>
+										<form className='slider-box'>
+											<input
+												type='range'
+												min='0'
+												max='1'
+												value={airPressureValue}
+												className='slider'
+												onChange={this.onAirPressureChange}
+												disabled={!enableButtons}
+											>
+											</input>
+										</form>
+										<div className='slider-label'>{airPressure}</div>
+									</div>
+									<h4 className='control-selection-labels'>Current</h4>
+									<div className='slider-container'>
+										<form className='slider-box'>
+											<input
+												type='range'
+												min='0'
+												max='15'
+												value={currentControl}
+												className='slider'
+												onChange={this.onCurrentChange}
+												disabled={!enableButtons}
+											>
+											</input>
+										</form>
+										<div className='slider-label'>{current}</div>
+									</div>
+									<Button
+										className='control-btn'
+										onClick={() => this.signOutUser()}
+									>
+										Sign Out
                                     </Button>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        )
-    }
+								</div>
+							</div>
+						</Col>
+					</Row>
+				</Container>
+			</div>
+		)
+	}
 }

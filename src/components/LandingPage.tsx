@@ -410,7 +410,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     <iframe
 										width="640"
 										height="360"
-										src="https://www.youtube.com/embed/live_stream?channel=UCz5EIMgaHer46dex0YKjB-Q"
+										src="https://www.youtube.com/embed/live_stream?channel=UCz5EIMgaHer46dex0YKjB-Q&autoplay=1"
 										allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
 										>
 									</iframe>

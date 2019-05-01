@@ -103,13 +103,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         // Set the slider value on movement then update Firebase Voltage_Control2
         this.setState({ voltageControl: event.target.value })
         this.db_ref.update({ Voltage_Control2: event.target.value })
-
-        // Grab the actual voltage from the Pi and display
-        let voltage_ref = this.props.db.ref('voltage/');
-        voltage_ref.once('value')
-            .then(function(snapshot: any) {
-                this.setState({ voltage: snapshot.val() })
-        }.bind(this));
     }
 
     onCurrentChange = (event: any) => {
@@ -117,13 +110,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({ currentControl: event.target.value })
         console.log(this.state.currentControl)
         this.db_ref.update({ Current_Control2: event.target.value })
-
-        // Grab the actual voltage from the Pi and display
-        let voltage_ref = this.props.db.ref('current/');
-        voltage_ref.once('value')
-            .then(function(snapshot: any) {
-                this.setState({ current: snapshot.val() })
-        }.bind(this));
     }
 
     // On slider change, update the display and Firebase

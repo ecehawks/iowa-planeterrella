@@ -90,6 +90,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     onCurrentChange = (event: any) => {
         // Set the slider value on movement then update Firebase Voltage_Control
         this.setState({ currentControl: event.target.value })
+        console.log(this.state.currentControl)
         this.db_ref.update({ Current_Control: event.target.value })
 
         // Grab the actual voltage from the Pi and display
@@ -134,9 +135,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }
     }
 
-    resetControls() {
-        this.db_ref.update({ Voltage_Control: 0, Current_Control: 0, inhibit: 0, air_pressure: "Low" })
-    }
+    // resetControls() {
+    //     this.db_ref.update({ Voltage_Control: 0, Current_Control: 0, inhibit: 0, air_pressure: "Low" })
+    // }
 
     showSignInOnClick() {
         this.setState({ showSignUp: false, showVerify: false, showSignIn: true })
@@ -328,7 +329,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     signOutUser() {
         this.props.clearTimer();
-        this.resetControls();
+        // this.resetControls();
         let isError = false;
         let email = localStorage.getItem('User');
     

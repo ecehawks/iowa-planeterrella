@@ -45,8 +45,8 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             current: 0,
             currentControl: 0,
             enableButtons: false,
-            hvOnOff: 'On',
-            hvValue: 1,
+            hvOnOff: 'Off',
+            hvValue: 0,
             mode: 'aurora',
             showSignUp: true,
             showSignIn: false,
@@ -528,7 +528,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 											>
 											</input>
 										</form>
-										<div className='slider-label'>{current}</div>
+										<div className='slider-label'>{current} mA</div>
 									</div>
 									<Button
 										className='control-btn'

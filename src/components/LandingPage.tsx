@@ -63,7 +63,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.showSignUpOnClick = this.showSignUpOnClick.bind(this);
         this.showVerifyOnClick = this.showVerifyOnClick.bind(this);
         this.resendVerifyOnClick = this.resendVerifyOnClick.bind(this);
-        this.checkVerification = this.checkVerification.bind(this);
         this.signUpUser = this.signUpUser.bind(this);
         this.signOutUser = this.signOutUser.bind(this);
     }
@@ -136,6 +135,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }
     }
 
+    resetControls() {
+        this.db_ref.update({ Voltage_Control: 0, Current_Control: 0, inhibit: 0, air_pressure: "Low" })
+    }
+
     showSignInOnClick() {
         this.setState({ showSignUp: false, showVerify: false, showSignIn: true })
     }
@@ -156,15 +159,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }.bind(this)).catch(function() {
             this.setState({ successFailMessage: 'Error sending verification email.' });
         }.bind(this));
-    }
-
-    checkVerification() {
-        var user = firebase.auth().currentUser;
-        if (user.emailVerified){
-            this.signInHelper(user.email);
-        }else{
-            this.setState({ successFailMessage: 'Please verify your email.' });
-        }
     }
 
     signUpUser(validate: any, email: string, password: string) {
@@ -191,7 +185,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                         console.log('Error sending verification email. Error: ' + error)
                     });
                     this.setState({
-                        successFailMessage: 'Check your email to verfiy account.',
+                        successFailMessage: 'Check your email to verfiy account. Refresh when finished.',
                         showSignUp: false,
                         showVerify: true
                     });
@@ -335,7 +329,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     signOutUser() {
         this.props.clearTimer();
-    
+        this.resetControls();
         let isError = false;
         let email = localStorage.getItem('User');
     
@@ -440,7 +434,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     signUpUser={this.signUpUser} />
                                 <Verify 
                                     isHidden={!isLoggedIn && this.state.showVerify}
-                                    checkVerification={this.checkVerification} 
                                     verifyEmail={this.resendVerifyOnClick}/>
                                 <SignIn
                                     isHidden={!isLoggedIn && this.state.showSignIn}

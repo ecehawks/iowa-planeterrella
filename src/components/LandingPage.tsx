@@ -75,9 +75,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     onVoltageChange = (event: any) => {
-        // Set the slider value on movement then update Firebase Voltage_Control
+        // Set the slider value on movement then update Firebase Voltage_Control2
         this.setState({ voltageControl: event.target.value })
-        this.db_ref.update({ Voltage_Control: event.target.value })
+        this.db_ref.update({ Voltage_Control2: event.target.value })
 
         // Grab the actual voltage from the Pi and display
         let voltage_ref = this.props.db.ref('voltage/');
@@ -88,10 +88,10 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     onCurrentChange = (event: any) => {
-        // Set the slider value on movement then update Firebase Voltage_Control
+        // Set the slider value on movement then update Firebase Voltage_Control2
         this.setState({ currentControl: event.target.value })
         console.log(this.state.currentControl)
-        this.db_ref.update({ Current_Control: event.target.value })
+        this.db_ref.update({ Current_Control2: event.target.value })
 
         // Grab the actual voltage from the Pi and display
         let voltage_ref = this.props.db.ref('current/');
@@ -104,7 +104,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     // On slider change, update the display and Firebase
     onHVChange = (event: any) => {
         this.setState({ hvValue: event.target.value })
-        this.db_ref.update({ inhibit: event.target.value })
+        this.db_ref.update({ inhibit2: event.target.value })
         if (event.target.value == 0) {
             this.setState({ hvOnOff: 'Off' })
         } else if (event.target.value == 1){
@@ -136,7 +136,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     // resetControls() {
-    //     this.db_ref.update({ Voltage_Control: 0, Current_Control: 0, inhibit: 0, air_pressure: "Low" })
+    //     this.db_ref.update({ Voltage_Control2: 0, Current_Control2: 0, inhibit2: 0, air_pressure: "Low" })
     // }
 
     showSignInOnClick() {

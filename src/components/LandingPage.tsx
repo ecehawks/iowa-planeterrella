@@ -135,9 +135,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }
     }
 
-    // resetControls() {
-    //     this.db_ref.update({ Voltage_Control2: 0, Current_Control2: 0, inhibit2: 0, air_pressure: "Low" })
-    // }
+    resetControls() {
+        this.db_ref.update({ Voltage_Control2: 0, Current_Control2: 0, inhibit2: 0, air_pressure: "Low" })
+    }
 
     showSignInOnClick() {
         this.setState({ showSignUp: false, showVerify: false, showSignIn: true })
@@ -330,7 +330,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     signOutUser() {
         console.log('Sign out')
         this.props.clearTimer();
-        // this.resetControls();
+        this.resetControls();
         let isError = false;
         let email = localStorage.getItem('User');
     

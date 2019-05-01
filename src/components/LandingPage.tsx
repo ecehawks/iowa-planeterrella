@@ -34,7 +34,8 @@ type LandingPageProps = {
 };
 
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
-    private db_ref = this.props.db.ref();
+		private db_ref = this.props.db.ref();
+		private db = this.props.db;
     public interval = null as any;
 
     constructor(props: LandingPageProps) {
@@ -67,12 +68,36 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     componentDidMount() {
-        // Sign out user on refresh and tab close
+				// Sign out user on refresh and tab close
+				this.readVoltage();
+				this.readCurrent();
         window.addEventListener('beforeunload', () => 
         {  
             this.signOutUser();
         });
-    }
+		}
+		
+		readVoltage(){
+			this.db.ref('voltage').on("value", (snapshot: { val: () => number; key: any; }) => {
+				console.log(typeof snapshot.val());
+				if (typeof snapshot.val() === 'number') {
+					this.setState({
+						voltage: snapshot.val(),
+					});
+				}
+			});
+		}
+
+		readCurrent(){
+			this.db.ref('current').on("value", (snapshot: { val: () => number; key: any; }) => {
+				console.log(typeof snapshot.val());
+				if (typeof snapshot.val() === 'number') {
+					this.setState({
+						current: snapshot.val(),
+					});
+				}
+			});
+		}
 
     onVoltageChange = (event: any) => {
         // Set the slider value on movement then update Firebase Voltage_Control2

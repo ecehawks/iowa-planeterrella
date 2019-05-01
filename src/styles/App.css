@@ -502,6 +502,7 @@
   }
   .video-section {
     height: auto;
+    width: 100%;
   }
   .video-col {
     height: auto;
@@ -514,7 +515,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 990px) {
   .nav-link {
     display: none;
   }
@@ -533,7 +534,7 @@
     align-items: center;
   }
   .control-col {
-    height: auto;
+    height: 60vh;
   }
   .video-col {
     height: auto;

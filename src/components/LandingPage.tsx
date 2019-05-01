@@ -25,7 +25,7 @@ type LandingPageState = {
 	showVerify: boolean,
 	successFailMessage: string,
 	mode: string,
-	queue: any[],
+	queue2: any[],
 }
 
 type LandingPageProps = {
@@ -55,7 +55,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             successFailMessage: '',
             voltage: 0,
             voltageControl: 0,
-            queue: [],
+            queue2: [],
         };
         this.signInUser = this.signInUser.bind(this);
         this.showSignInOnClick = this.showSignInOnClick.bind(this);
@@ -211,17 +211,17 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             localStorage.setItem('User', email);
             localStorage.setItem('isLoggedIn', 'true');
             
-            let queue_ref = this.props.db.ref('queue/');
+            let queue2_ref = this.props.db.ref('queue2/');
 
-            queue_ref.once('value')
+            queue2_ref.once('value')
                 .then(function(snapshot: any) {
-                    localStorage.setItem('queue', JSON.stringify(snapshot.val()));
+                    localStorage.setItem('queue2', JSON.stringify(snapshot.val()));
                 });
 
-            let queue = JSON.parse(localStorage.getItem('queue'));
-            let size = Object.keys(queue).length;
+            let queue2 = JSON.parse(localStorage.getItem('queue2'));
+            let size = Object.keys(queue2).length;
 
-            queue_ref.push(email);
+            queue2_ref.push(email);
             size++;
 
             // If the user is the first under NA, then 
@@ -292,16 +292,16 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 document.getElementById('video-label').innerHTML = 'Approximately ' + minutes + ' min ' + seconds + ' sec until your turn';
             }
             
-            // Grab the queue
-            let queue_ref = this.props.db.ref('queue/');
-            queue_ref.once('value')
+            // Grab the queue2
+            let queue2_ref = this.props.db.ref('queue2/');
+            queue2_ref.once('value')
                 .then(function(snapshot: any) {
-                    localStorage.setItem('queue', JSON.stringify(snapshot.val()));
+                    localStorage.setItem('queue2', JSON.stringify(snapshot.val()));
             });
-            let queue = JSON.parse(localStorage.getItem('queue'));
+            let queue2 = JSON.parse(localStorage.getItem('queue2'));
           
             // If the estimated time is over or they are next
-            if (distance < 0 || (queue[Object.keys(queue)[1]] == email && !timer.isControl)) {
+            if (distance < 0 || (queue2[Object.keys(queue2)[1]] == email && !timer.isControl)) {
                 // Clear the estimation timer
                 clearInterval(this.interval);
                 this.interval = null;
@@ -310,7 +310,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     timer.done = true;
                     
                     // If the user is next, set to control or place them on a wait
-                    if (queue[Object.keys(queue)[1]] == email){
+                    if (queue2[Object.keys(queue2)[1]] == email){
                         this.setState({enableButtons: true});
                         this.startTimer('control', 10);
                     }else{
@@ -328,6 +328,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     signOutUser() {
+        console.log('Sign out')
         this.props.clearTimer();
         // this.resetControls();
         let isError = false;
@@ -358,28 +359,28 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             });
     
             
-            let queue_ref = this.props.db.ref('queue/');
-            queue_ref.once('value')
+            let queue2_ref = this.props.db.ref('queue2/');
+            queue2_ref.once('value')
                 .then(function(snapshot: any) {
-                    localStorage.setItem('queue', JSON.stringify(snapshot.val()));
+                    localStorage.setItem('queue2', JSON.stringify(snapshot.val()));
             });
             
-            // Find and delete the user from the queue
-            let queue = JSON.parse(localStorage.getItem('queue'));
-            let size = Object.keys(queue).length;
+            // Find and delete the user from the queue2
+            let queue2 = JSON.parse(localStorage.getItem('queue2'));
+            let size = Object.keys(queue2).length;
             let deleteKey = '';
     
             if (size > 1){
-                for(var key in queue){
-                    if ( queue[key] == email) {
+                for(var key in queue2){
+                    if ( queue2[key] == email) {
                         deleteKey = key;
                     }
                 }
-                delete queue[deleteKey]
+                delete queue2[deleteKey]
             }
             
             let db_ref = this.props.db.ref();
-            db_ref.update({ queue });
+            db_ref.update({ queue2 });
         }else{
           document.getElementById('success-fail-message').innerHTML = 'Error Signing Out - Try Again Later';
         }

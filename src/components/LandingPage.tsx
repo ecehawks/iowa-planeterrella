@@ -444,13 +444,21 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 >
                                 </iframe> 
                             </div>
-                            
-                            <div className='queue-info'>
+														<Row>
+                            <Col className='queue-info'>
+															<div className='video-label-row'>
+															<Row>
                                 <p id='video-label' className='video-label'>{videoLabelText}</p>
-                            </div>
-                            <div className='queue-info'>
+															</Row>
+															<Row>
                                 <p className='warning'>Do not refresh the page</p>
-                            </div>
+															</Row>
+															</div>
+														</Col>
+                            <Col className='queue-info' xs='5'>
+																<p className='latency-message'>Video latancy and quality can be adjusted using the gear icon. Please allow up to 10 seconds for changes to appear.</p>
+														</Col>                            
+														</Row>
                         </div>
                     </Col>
                     <Col className='control-col' md={3}>

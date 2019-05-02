@@ -99,6 +99,17 @@
 
 /* Video Styling */
 
+.latency-message {
+	display: inline-block;
+  color: #9a8f65;
+  font-size: 12px;
+  font-weight: 400;
+	text-align: left;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin: 10px;
+}
+
 .video {
   height: 100%;
   width: 100%;
@@ -138,6 +149,12 @@
   font-weight: 300;
   text-align: left;
   margin-bottom: 5px;
+}
+
+.video-label-row{
+	display: inline-block;
+	margin-bottom: 5px;
+	margin-left: 15px;
 }
 
 .video-row {

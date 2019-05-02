@@ -134,12 +134,19 @@
   width: 100%;
 }
 
+.label-row {
+  margin-top: 10px;
+}
+
 .warning {
   display: inline-block;
   color: #f3a229;
   font-size: 12px;
   font-weight: 300;
   text-align: left;
+  line-height: 100%;
+  width: 100%;
+  margin-bottom: 0;
 }
 
 .video-label {
@@ -149,6 +156,8 @@
   font-weight: 300;
   text-align: left;
   margin-bottom: 5px;
+  line-height: 100%;
+  width: 100%;
 }
 
 .video-label-row{

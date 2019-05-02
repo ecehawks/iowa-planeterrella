@@ -68,36 +68,37 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     componentDidMount() {
-				// Sign out user on refresh and tab close
-				this.readVoltage();
-				this.readCurrent();
+        // Sign out user on refresh and tab close
+        this.readVoltage();
+        this.readCurrent();
+
         window.addEventListener('beforeunload', () => 
         {  
             this.signOutUser();
         });
-		}
+    }
 		
-		readVoltage(){
-			this.db.ref('voltage').on("value", (snapshot: { val: () => number; key: any; }) => {
-				console.log(typeof snapshot.val());
-				if (typeof snapshot.val() === 'number') {
-					this.setState({
-						voltage: snapshot.val(),
-					});
-				}
-			});
-		}
+    readVoltage(){
+        this.db.ref('voltage').on("value", (snapshot: { val: () => number; key: any; }) => {
+            console.log(typeof snapshot.val());
+            if (typeof snapshot.val() === 'number') {
+                this.setState({
+                    voltage: snapshot.val(),
+                });
+            }
+        });
+    }
 
-		readCurrent(){
-			this.db.ref('current').on("value", (snapshot: { val: () => number; key: any; }) => {
-				console.log(typeof snapshot.val());
-				if (typeof snapshot.val() === 'number') {
-					this.setState({
-						current: snapshot.val(),
-					});
-				}
-			});
-		}
+    readCurrent(){
+        this.db.ref('current').on("value", (snapshot: { val: () => number; key: any; }) => {
+            console.log(typeof snapshot.val());
+            if (typeof snapshot.val() === 'number') {
+                this.setState({
+                    current: snapshot.val(),
+                });
+            }
+        });
+    }
 
     onVoltageChange = (event: any) => {
         // Set the slider value on movement then update Firebase Voltage_Control2
@@ -108,7 +109,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     onCurrentChange = (event: any) => {
         // Set the slider value on movement then update Firebase Voltage_Control2
         this.setState({ currentControl: event.target.value })
-        console.log(this.state.currentControl)
         this.db_ref.update({ Current_Control2: event.target.value })
     }
 
@@ -395,7 +395,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         }else{
           document.getElementById('success-fail-message').innerHTML = 'Error Signing Out - Try Again Later';
         }
-      }
+    }
 
 
     render() {

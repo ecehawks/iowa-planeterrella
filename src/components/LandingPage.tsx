@@ -29,13 +29,12 @@ type LandingPageState = {
 }
 
 type LandingPageProps = {
-	clearTimer: () => void;
 	db: any;
 };
 
 export default class LandingPage extends React.Component<LandingPageProps, LandingPageState> {
-		private db_ref = this.props.db.ref();
-		private db = this.props.db;
+    private db_ref = this.props.db.ref();
+    private db = this.props.db;
     public interval = null as any;
 
     constructor(props: LandingPageProps) {
@@ -76,6 +75,14 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         {  
             this.signOutUser();
         });
+    }
+
+    componentWillUnmount() {
+        this.clearTimer();
+    }
+
+    clearTimer() {
+        clearInterval(this.interval);
     }
 		
     readVoltage(){
@@ -340,7 +347,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
     signOutUser() {
         console.log('Sign out')
-        this.props.clearTimer();
+        this.clearTimer();
         this.resetControls();
         let isError = false;
         let email = localStorage.getItem('User');

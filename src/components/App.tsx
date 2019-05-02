@@ -35,19 +35,6 @@ export default class App extends React.Component<AppProps, AppState> {
     this.state = {};
   };
 
-  componentDidMount() {}
-
-  componentWillUnmount() {
-    this.clearTimer();
-  }
-
-  clearTimer() {
-    for(let i=0; i<100; i++)
-    {
-        window.clearInterval(i);
-    }
-  }
-
   render() {
 
     return (
@@ -61,7 +48,6 @@ export default class App extends React.Component<AppProps, AppState> {
           path='/'
           render={(props) => <LandingPage 
             {...props}
-            clearTimer={this.clearTimer} 
             db={db}
           />}
         />

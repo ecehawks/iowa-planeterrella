@@ -3,7 +3,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -402,147 +402,143 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
 
         return (
             <div className='video-section'>
-                <Container className='video-section'>
-                    <Row className='video-row'>
-                        <Col className='control-col' md={9}>
-                            <div className='control-box'>
-                                <div
-                                    id="w-node-ab1b4addd327-3fb3fd5a"
-                                    className="video w-video w-embed">
-                                    <iframe
-										width="640"
-										height="360"
-										src="https://www.youtube.com/embed/live_stream?channel=UCz5EIMgaHer46dex0YKjB-Q&autoplay=1"
-										allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-										>
-									</iframe>
-                                </div>
-                                <div className='queue-info'>
-                                    <p id='video-label' className='video-label'>{videoLabelText}</p>
-                                </div>
-                                <div className='queue-info'>
-                                    <p className='warning'>Do not refresh the page</p>
-                                </div>
+                <Row className='video-row'>
+                    <Col className='control-col' md={9}>
+                        <div className='video control-box'>
+                            <div className='video-iframe'>
+                               <iframe
+                                className='iframe'
+                                src="https://www.youtube.com/embed/live_stream?channel=UCz5EIMgaHer46dex0YKjB-Q&autoplay=1"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                                >
+                                </iframe> 
                             </div>
-                        </Col>
-                        <Col className='control-col' md={3}>
-                            <div className='control-box'>
-                                <h2 className='heading control'>CONTROLS</h2>
-                                <h4 id='success-fail-message' className='success-fail-message'>{this.state.successFailMessage}</h4>
-                                <SignUp 
-                                    isHidden={!isLoggedIn && this.state.showSignUp}
-                                    signInLink={this.showSignInOnClick}
-                                    signUpUser={this.signUpUser} />
-                                <Verify 
-                                    isHidden={!isLoggedIn && this.state.showVerify}
-                                    verifyEmail={this.resendVerifyOnClick}/>
-                                <SignIn
-                                    isHidden={!isLoggedIn && this.state.showSignIn}
-                                    signUpLink={this.showSignUpOnClick}
-                                    showControls={this.signInUser} />
-                                <div id='controls' className={(this.state.showControls || isLoggedIn) ? 'controls' : 'hide'}>
-                                <h4 className='control-selection-labels'>High Voltage Power</h4>
-                                    <div className='slider-container'>
-                                        <form className='slider-box power'>
-                                            <input
-                                                type='range'
-                                                min='0'
-                                                max='1'
-                                                value={hvValue}
-                                                className='slider'
-                                                onChange={this.onHVChange}
-                                                disabled={!enableButtons}
-                                            >
-                                            </input>
-                                        </form>
-                                        <div className='slider-label'>{hvOnOff}</div>
-                                    </div>
-                                    <h4 className='control-selection-labels'>Select Mode</h4>
-                                    <div className='mode-select'>
-                                        <Button
-                                            id='aurora-btn'
-                                            className='button top'
-                                            value='Aurora'
-                                            onClick={this.onModeSelection}
+                            
+                            <div className='queue-info'>
+                                <p id='video-label' className='video-label'>{videoLabelText}</p>
+                            </div>
+                            <div className='queue-info'>
+                                <p className='warning'>Do not refresh the page</p>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col className='control-col' md={3}>
+                        <div className='control-box'>
+                            <h2 className='heading control'>CONTROLS</h2>
+                            <h4 id='success-fail-message' className='success-fail-message'>{this.state.successFailMessage}</h4>
+                            <SignUp 
+                                isHidden={!isLoggedIn && this.state.showSignUp}
+                                signInLink={this.showSignInOnClick}
+                                signUpUser={this.signUpUser} />
+                            <Verify 
+                                isHidden={!isLoggedIn && this.state.showVerify}
+                                verifyEmail={this.resendVerifyOnClick}/>
+                            <SignIn
+                                isHidden={!isLoggedIn && this.state.showSignIn}
+                                signUpLink={this.showSignUpOnClick}
+                                showControls={this.signInUser} />
+                            <div id='controls' className={(this.state.showControls || isLoggedIn) ? 'controls' : 'hide'}>
+                            <h4 className='control-selection-labels'>High Voltage Power</h4>
+                                <div className='slider-container'>
+                                    <form className='slider-box power'>
+                                        <input
+                                            type='range'
+                                            min='0'
+                                            max='1'
+                                            value={hvValue}
+                                            className='slider'
+                                            onChange={this.onHVChange}
                                             disabled={!enableButtons}
-                                        >Aurora
-                                        </Button>
-										<Button
-											id='aurora-lobe-btn'
-											className='button'
-											value='Belt'
-											onClick={this.onModeSelection}
-											disabled={!enableButtons}
-										>Van Allen Belt
-                                        </Button>
-										<Button
-											id='stellar-ring-current-btn'
-											className='button bottom'
-											value='Ring'
-											onClick={this.onModeSelection}
-											disabled={!enableButtons}
-										>Stellar Ring Current
-                                        </Button>
-									</div>
-									<h4 className='control-selection-labels'>Voltage</h4>
-									<div className='slider-container'>
-										<form className='slider-box'>
-											<input
-												type='range'
-												min='0'
-												max='70'
-												value={voltageControl}
-												className='slider'
-												onChange={this.onVoltageChange}
-												disabled={!enableButtons}
-											>
-											</input>
-										</form>
-										<div className='slider-label'>{voltage} V</div>
-									</div>
-									<h4 className='control-selection-labels'>Air Pressure</h4>
-									<div className='slider-container'>
-										<form className='slider-box'>
-											<input
-												type='range'
-												min='0'
-												max='1'
-												value={airPressureValue}
-												className='slider'
-												onChange={this.onAirPressureChange}
-												disabled={!enableButtons}
-											>
-											</input>
-										</form>
-										<div className='slider-label'>{airPressure}</div>
-									</div>
-									<h4 className='control-selection-labels'>Current</h4>
-									<div className='slider-container'>
-										<form className='slider-box'>
-											<input
-												type='range'
-												min='0'
-												max='15'
-												value={currentControl}
-												className='slider'
-												onChange={this.onCurrentChange}
-												disabled={!enableButtons}
-											>
-											</input>
-										</form>
-										<div className='slider-label'>{current} mA</div>
-									</div>
-									<Button
-										className='control-btn'
-										onClick={() => this.signOutUser()}
-									>
-										Sign Out
+                                        >
+                                        </input>
+                                    </form>
+                                    <div className='slider-label'>{hvOnOff}</div>
+                                </div>
+                                <h4 className='control-selection-labels'>Select Mode</h4>
+                                <div className='mode-select'>
+                                    <Button
+                                        id='aurora-btn'
+                                        className='button top'
+                                        value='Aurora'
+                                        onClick={this.onModeSelection}
+                                        disabled={!enableButtons}
+                                    >Aurora
                                     </Button>
-								</div>
-							</div>
-						</Col>
-					</Row>
-				</Container>
+                                    <Button
+                                        id='aurora-lobe-btn'
+                                        className='button'
+                                        value='Belt'
+                                        onClick={this.onModeSelection}
+                                        disabled={!enableButtons}
+                                    >Van Allen Belt
+                                    </Button>
+                                    <Button
+                                        id='stellar-ring-current-btn'
+                                        className='button bottom'
+                                        value='Ring'
+                                        onClick={this.onModeSelection}
+                                        disabled={!enableButtons}
+                                    >Stellar Ring Current
+                                    </Button>
+                                </div>
+                                <h4 className='control-selection-labels'>Voltage</h4>
+                                <div className='slider-container'>
+                                    <form className='slider-box'>
+                                        <input
+                                            type='range'
+                                            min='0'
+                                            max='70'
+                                            value={voltageControl}
+                                            className='slider'
+                                            onChange={this.onVoltageChange}
+                                            disabled={!enableButtons}
+                                        >
+                                        </input>
+                                    </form>
+                                    <div className='slider-label'>{voltage} V</div>
+                                </div>
+                                <h4 className='control-selection-labels'>Air Pressure</h4>
+                                <div className='slider-container'>
+                                    <form className='slider-box'>
+                                        <input
+                                            type='range'
+                                            min='0'
+                                            max='1'
+                                            value={airPressureValue}
+                                            className='slider'
+                                            onChange={this.onAirPressureChange}
+                                            disabled={!enableButtons}
+                                        >
+                                        </input>
+                                    </form>
+                                    <div className='slider-label'>{airPressure}</div>
+                                </div>
+                                <h4 className='control-selection-labels'>Current</h4>
+                                <div className='slider-container'>
+                                    <form className='slider-box'>
+                                        <input
+                                            type='range'
+                                            min='0'
+                                            max='15'
+                                            value={currentControl}
+                                            className='slider'
+                                            onChange={this.onCurrentChange}
+                                            disabled={!enableButtons}
+                                        >
+                                        </input>
+                                    </form>
+                                    <div className='slider-label'>{current} mA</div>
+                                </div>
+                                <Button
+                                    className='control-btn'
+                                    onClick={() => this.signOutUser()}
+                                >
+                                    Sign Out
+                                </Button>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
 			</div>
 		)
 	}

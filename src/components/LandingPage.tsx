@@ -150,6 +150,19 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                 mode: value
             })
             this.db_ref.update({ mode: value })
+            if (value == 'Aurora'){
+                document.getElementById('aurora-btn').className = 'selected-btn top btn btn-secondary';
+                document.getElementById('belt-btn').className = 'button btn btn-secondary';
+                document.getElementById('ring-btn').className = 'button bottom btn btn-secondary';
+            }else if (value == 'Belt'){
+                document.getElementById('aurora-btn').className = 'button top btn btn-secondary';
+                document.getElementById('belt-btn').className = 'selected-btn btn btn-secondary';
+                document.getElementById('ring-btn').className = 'button bottom btn btn-secondary';
+            }else if (value == 'Ring'){
+                document.getElementById('aurora-btn').className = 'button top btn btn-secondary';
+                document.getElementById('belt-btn').className = 'button btn btn-secondary';
+                document.getElementById('ring-btn').className = 'selected-btn bottom btn btn-secondary';
+            }
         }
     }
 
@@ -483,7 +496,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     >Aurora
                                     </Button>
                                     <Button
-                                        id='aurora-lobe-btn'
+                                        id='belt-btn'
                                         className='button'
                                         value='Belt'
                                         onClick={this.onModeSelection}
@@ -491,7 +504,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                     >Van Allen Belt
                                     </Button>
                                     <Button
-                                        id='stellar-ring-current-btn'
+                                        id='ring-btn'
                                         className='button bottom'
                                         value='Ring'
                                         onClick={this.onModeSelection}

@@ -19,6 +19,7 @@ type LandingPageState = {
     hvOnOff: string,
     hvValue: number,
     enableButtons: boolean,
+    enableControls: boolean,
     showSignUp: boolean,
     showSignIn: boolean,
     showControls: boolean,
@@ -45,6 +46,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             current: 0,
             currentControl: 0,
             enableButtons: false,
+            enableControls: false,
             hvOnOff: 'Off',
             hvValue: 0,
             mode: 'aurora',
@@ -123,9 +125,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
         this.setState({ hvValue: event.target.value })
         this.db_ref.update({ inhibit2: event.target.value })
         if (event.target.value == 0) {
-            this.setState({ hvOnOff: 'Off' })
+            this.setState({ hvOnOff: 'Off', enableControls: false })
         } else if (event.target.value == 1) {
-            this.setState({ hvOnOff: 'On' })
+            this.setState({ hvOnOff: 'On', enableControls: true })
         }
     }
 
@@ -423,7 +425,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
             current, currentControl,
             hvOnOff, hvValue,
             voltageControl, voltage,
-            enableButtons } = this.state;
+            enableButtons, enableControls } = this.state;
         let isLoggedIn = false;
         if (localStorage.getItem('isLoggedIn') == 'true') {
             isLoggedIn = true;
@@ -495,7 +497,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                         className='button top'
                                         value='Aurora'
                                         onClick={this.onModeSelection}
-                                        disabled={!enableButtons}
+                                        disabled={!enableButtons || !enableControls}
                                     >Aurora
                                     </Button>
                                     <Button
@@ -503,7 +505,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                         className='button'
                                         value='Belt'
                                         onClick={this.onModeSelection}
-                                        disabled={!enableButtons}
+                                        disabled={!enableButtons || !enableControls}
                                     >Van Allen Belt
                                     </Button>
                                     <Button
@@ -511,7 +513,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                         className='button bottom'
                                         value='Ring'
                                         onClick={this.onModeSelection}
-                                        disabled={!enableButtons}
+                                        disabled={!enableButtons || !enableControls}
                                     >Stellar Ring Current
                                     </Button>
                                 </div>
@@ -523,9 +525,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             min='0'
                                             max='70'
                                             value={voltageControl}
-                                            className='slider'
+                                            className={enableControls ? 'slider' : 'disabled-slider'}
                                             onChange={this.onVoltageChange}
-                                            disabled={!enableButtons}
+                                            disabled={!enableButtons || !enableControls}
                                         >
                                         </input>
                                     </form>
@@ -533,15 +535,15 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                 </div>
                                 <h4 className='control-selection-labels'>Air Pressure</h4>
                                 <div className='slider-container'>
-                                    <form className='slider-box'>
+                                    <form className='slider-box power'>
                                         <input
                                             type='range'
                                             min='0'
                                             max='1'
                                             value={airPressureValue}
-                                            className='slider'
+                                            className={enableControls ? 'slider' : 'disabled-slider'}
                                             onChange={this.onAirPressureChange}
-                                            disabled={!enableButtons}
+                                            disabled={!enableButtons || !enableControls}
                                         >
                                         </input>
                                     </form>
@@ -555,9 +557,9 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                                             min='0'
                                             max='15'
                                             value={currentControl}
-                                            className='slider'
+                                            className={enableControls ? 'slider' : 'disabled-slider'}
                                             onChange={this.onCurrentChange}
-                                            disabled={!enableButtons}
+                                            disabled={!enableButtons || !enableControls}
                                         >
                                         </input>
                                     </form>

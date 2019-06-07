@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/iowa-planeterrella/static/media/ring_current (1).c2e8bedb.jpg"
   },
   {
-    "revision": "a602b0f3ed10f74fba9e",
+    "revision": "974ccb6d805d92007203",
     "url": "/iowa-planeterrella/static/css/main.6a01e0b2.chunk.css"
   },
   {
@@ -36,8 +36,8 @@ self.__precacheManifest = [
     "url": "/iowa-planeterrella/static/media/ring_current.02e25e01.jpg"
   },
   {
-    "revision": "a602b0f3ed10f74fba9e",
-    "url": "/iowa-planeterrella/static/js/main.a602b0f3.chunk.js"
+    "revision": "974ccb6d805d92007203",
+    "url": "/iowa-planeterrella/static/js/main.974ccb6d.chunk.js"
   },
   {
     "revision": "ce42d2ec1a7233fd642d924a8848f542",
@@ -56,12 +56,12 @@ self.__precacheManifest = [
     "url": "/iowa-planeterrella/static/media/fractal-1280079_960_720.9ca4afb8.jpg"
   },
   {
-    "revision": "80f20e071664d99ef63b28c3eed18460",
-    "url": "/iowa-planeterrella/static/media/logo_gold.80f20e07.png"
-  },
-  {
     "revision": "5d063af551a4d5c636a544276deba1d4",
     "url": "/iowa-planeterrella/static/media/10712677_372448922931609_40_med.5d063af5.jpeg"
+  },
+  {
+    "revision": "80f20e071664d99ef63b28c3eed18460",
+    "url": "/iowa-planeterrella/static/media/logo_gold.80f20e07.png"
   },
   {
     "revision": "ada69b34b6d79415684eee088a825b8a",
@@ -72,7 +72,7 @@ self.__precacheManifest = [
     "url": "/iowa-planeterrella/static/css/1.9214974d.chunk.css"
   },
   {
-    "revision": "ee7452690102b3f6e801a859e18ce64a",
+    "revision": "102388ba8b4862e090f9d49cf28b016c",
     "url": "/iowa-planeterrella/index.html"
   }
 ];

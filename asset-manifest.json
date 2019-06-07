@@ -1,7 +1,7 @@
 {
   "main.css": "/iowa-planeterrella/static/css/main.6a01e0b2.chunk.css",
-  "main.js": "/iowa-planeterrella/static/js/main.4747d9d5.chunk.js",
-  "main.js.map": "/iowa-planeterrella/static/js/main.4747d9d5.chunk.js.map",
+  "main.js": "/iowa-planeterrella/static/js/main.d5780c65.chunk.js",
+  "main.js.map": "/iowa-planeterrella/static/js/main.d5780c65.chunk.js.map",
   "static/css/1.9214974d.chunk.css": "/iowa-planeterrella/static/css/1.9214974d.chunk.css",
   "static/js/1.48ebc813.chunk.js": "/iowa-planeterrella/static/js/1.48ebc813.chunk.js",
   "static/js/1.48ebc813.chunk.js.map": "/iowa-planeterrella/static/js/1.48ebc813.chunk.js.map",
@@ -13,11 +13,11 @@
   "static/media/ring_current (1).jpg": "/iowa-planeterrella/static/media/ring_current (1).c2e8bedb.jpg",
   "static/media/radiation_belt.jpg": "/iowa-planeterrella/static/media/radiation_belt.ce42d2ec.jpg",
   "static/media/radiation_belt (1).jpg": "/iowa-planeterrella/static/media/radiation_belt (1).feba72c9.jpg",
-  "static/media/App.css": "/iowa-planeterrella/static/media/nsf_logo.f497807f.png",
+  "static/media/App.css": "/iowa-planeterrella/static/media/planeterrella_banner.c49261cc.jpg",
   "static/media/auroroa (1).jpg": "/iowa-planeterrella/static/media/auroroa (1).c6b6b9e7.jpg",
   "static/css/main.6a01e0b2.chunk.css.map": "/iowa-planeterrella/static/css/main.6a01e0b2.chunk.css.map",
   "static/css/1.9214974d.chunk.css.map": "/iowa-planeterrella/static/css/1.9214974d.chunk.css.map",
   "index.html": "/iowa-planeterrella/index.html",
-  "precache-manifest.8f7acd2d7ed89b753036d3122eaf7605.js": "/iowa-planeterrella/precache-manifest.8f7acd2d7ed89b753036d3122eaf7605.js",
+  "precache-manifest.59d6a898a360fcca56110d0afa21c822.js": "/iowa-planeterrella/precache-manifest.59d6a898a360fcca56110d0afa21c822.js",
   "service-worker.js": "/iowa-planeterrella/service-worker.js"
 }

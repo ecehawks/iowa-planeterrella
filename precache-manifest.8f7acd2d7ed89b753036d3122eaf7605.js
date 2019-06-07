@@ -48,20 +48,20 @@ self.__precacheManifest = [
     "url": "/iowa-planeterrella/static/media/radiation_belt (1).feba72c9.jpg"
   },
   {
-    "revision": "c49261cca5fe8030f39fe119bab6950c",
-    "url": "/iowa-planeterrella/static/media/planeterrella_banner.c49261cc.jpg"
-  },
-  {
-    "revision": "9ca4afb8392a424571eea0b9ec72deac",
-    "url": "/iowa-planeterrella/static/media/fractal-1280079_960_720.9ca4afb8.jpg"
-  },
-  {
     "revision": "80f20e071664d99ef63b28c3eed18460",
     "url": "/iowa-planeterrella/static/media/logo_gold.80f20e07.png"
   },
   {
     "revision": "5d063af551a4d5c636a544276deba1d4",
     "url": "/iowa-planeterrella/static/media/10712677_372448922931609_40_med.5d063af5.jpeg"
+  },
+  {
+    "revision": "9ca4afb8392a424571eea0b9ec72deac",
+    "url": "/iowa-planeterrella/static/media/fractal-1280079_960_720.9ca4afb8.jpg"
+  },
+  {
+    "revision": "c49261cca5fe8030f39fe119bab6950c",
+    "url": "/iowa-planeterrella/static/media/planeterrella_banner.c49261cc.jpg"
   },
   {
     "revision": "ada69b34b6d79415684eee088a825b8a",

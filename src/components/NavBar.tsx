@@ -40,19 +40,19 @@ export default class NavBar extends React.Component<NavBarProps, NavBarState> {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className='ml-auto' navbar>
                             <NavItem>
-                                <NavLink href='/'>Home</NavLink>
+                                <NavLink href='/iowa-planeterrella/#/'>Home</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href='/aurora'>Aurora</NavLink>
+                                <NavLink href='/iowa-planeterrella/#/aurora'>Aurora</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href='/van-allen-radiation-belts'>Van Allen Radiation Belts</NavLink>
+                                <NavLink href='/iowa-planeterrella/#/van-allen-radiation-belts'>Van Allen Radiation Belts</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href='/stellar-ring-current'>Stellar Ring Current</NavLink>
+                                <NavLink href='/iowa-planeterrella/#/stellar-ring-current'>Stellar Ring Current</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href='/history'>History</NavLink>
+                                <NavLink href='/iowa-planeterrella/#/history'>History</NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>

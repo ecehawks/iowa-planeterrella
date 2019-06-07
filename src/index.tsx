@@ -2,15 +2,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/App.css';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter, Route} from 'react-router-dom'
+import { HashRouter, Route} from 'react-router-dom'
 
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-	<BrowserRouter>
+	<HashRouter basename='/'>
 		<Route path='' component={App}/>
-	</BrowserRouter>, 
+	</HashRouter>, 
 	document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

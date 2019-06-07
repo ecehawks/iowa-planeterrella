@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/iowa-planeterrella/precache-manifest.dc6bd85c19e701f861d93ca0cdddede5.js"
+  "/iowa-planeterrella/precache-manifest.778a408eaa0184af2381abefc8195d5d.js"
 );
 
 workbox.clientsClaim();

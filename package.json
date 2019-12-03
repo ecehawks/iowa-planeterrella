@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Example on using create-react-app with a Node Express Backend",
   "license": "MIT",
-  "homepage": "https://ecehawks.github.io/iowa-planeterrella/",
   "dependencies": {
     "@firebase/app-types": "^0.3.3",
     "@firebase/util": "^0.2.6",
@@ -34,9 +33,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
-		"eject": "react-scripts eject",
-		"predeploy": "yarn build",
-		"deploy": "gh-pages -d build"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": [
     ">0.2%",

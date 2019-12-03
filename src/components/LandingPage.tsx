@@ -87,8 +87,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     readVoltage() {
-        this.db.ref('voltage').on("value", (snapshot: { val: () => number; key: any; }) => {
-            console.log(typeof snapshot.val());
+        this.db.ref('voltage').on('value', (snapshot: { val: () => number; key: any; }) => {
             if (typeof snapshot.val() === 'number') {
                 this.setState({
                     voltage: snapshot.val(),
@@ -98,8 +97,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     readCurrent() {
-        this.db.ref('current').on("value", (snapshot: { val: () => number; key: any; }) => {
-            console.log(typeof snapshot.val());
+        this.db.ref('current').on('value', (snapshot: { val: () => number; key: any; }) => {
             if (typeof snapshot.val() === 'number') {
                 this.setState({
                     current: snapshot.val(),
@@ -168,7 +166,7 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     resetControls() {
-        this.db_ref.update({ Voltage_Control2: 0, Current_Control2: 0, inhibit2: 0, air_pressure: "Low" })
+        this.db_ref.update({ Voltage_Control2: 0, Current_Control2: 0, inhibit2: 0, air_pressure: 'Low' })
     }
 
     showSignInOnClick() {
@@ -186,7 +184,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     resendVerifyOnClick() {
         var user = firebase.auth().currentUser;
         user.sendEmailVerification().then(function () {
-            console.log("Success")
             this.signInHelper(user.email);
         }.bind(this)).catch(function () {
             this.setState({ successFailMessage: 'Error sending verification email.' });
@@ -360,7 +357,6 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
     }
 
     signOutUser() {
-        console.log('Sign out')
         this.clearTimer();
         this.resetControls();
         let isError = false;
@@ -438,12 +434,12 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     <Col className='control-col' md={9}>
                         <div className='video control-box'>
                             <div className='video-iframe'>
-                                <iframe
-                                    className='iframe'
-                                    src="https://www.youtube.com/embed/live_stream?channel=UCz5EIMgaHer46dex0YKjB-Q&autoplay=1"
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                                >
-                                </iframe>
+															<iframe 
+																className='iframe'
+																src="https://www.youtube.com/embed/9-Mtt-26h1A"
+																allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+															>
+															</iframe>
                             </div>
                             <Row className='label-row'>
                                 <Col className='queue-info'>

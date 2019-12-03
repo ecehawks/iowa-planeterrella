@@ -434,12 +434,12 @@ export default class LandingPage extends React.Component<LandingPageProps, Landi
                     <Col className='control-col' md={9}>
                         <div className='video control-box'>
                             <div className='video-iframe'>
-                                <iframe
-                                    className='iframe'
-                                    src='https://www.youtube.com/embed/live_stream?channel=UCz5EIMgaHer46dex0YKjB-Q&autoplay=1'
-                                    allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen'
-                                >
-                                </iframe>
+															<iframe 
+																className='iframe'
+																src="https://www.youtube.com/embed/9-Mtt-26h1A"
+																allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+															>
+															</iframe>
                             </div>
                             <Row className='label-row'>
                                 <Col className='queue-info'>
